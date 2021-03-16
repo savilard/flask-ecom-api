@@ -4,6 +4,7 @@ from flask_restful import Api
 from flask_ecom_api.v1.endpoints.products import ProductAPI, ProductListAPI
 
 app = Flask(__name__)
+app.config.from_object('flask_ecom_api.config.DevelopmentConfig')
 
 api_blueprint = Blueprint(app, __name__)
 
