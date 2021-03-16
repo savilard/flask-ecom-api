@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "flask-ecom-api"
+version = "0.1.0"
+description = ""
+authors = ["savilard <vitaliyantonoff@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+Flask = "^1.1.2"
+Flask-RESTful = "^0.3.8"
+flask-apispec = "^0.11.0"
+Flask-SQLAlchemy = "^2.4.4"
+
+loguru = "^0.5.3"
+webargs = "^7.0.1"
+marshmallow = "^3.10.0"
+
+[tool.poetry.dev-dependencies]
+wemake-python-styleguide = "^0.15.2"
+pre-commit = "^2.11.1"
+mypy = "^0.812"
+
+pytest = "^6.2.2"
+pytest-pythonpath = "^0.7.3"
+pytest-randomly = "^3.5.0"
+pytest-cov = "^2.11.1"
+pytest-deadfixtures = "^2.2.1"
+
+black = "^20.8b1"
+blacken-docs = "^1.10.0"
+add-trailing-comma = "^2.1.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
