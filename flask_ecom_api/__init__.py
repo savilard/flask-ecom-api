@@ -1,10 +1,17 @@
+import os
+
 from flask import Blueprint, Flask
 from flask_restful import Api
+from flask_sqlalchemy import SQLAlchemy
 
 from flask_ecom_api.v1.endpoints.products import ProductAPI, ProductListAPI
 
 app = Flask(__name__)
-app.config.from_object('flask_ecom_api.config.DevelopmentConfig')
+
+app_settings = os.getenv('APP_SETTINGS')
+app.config.from_object(app_settings)
+
+db = SQLAlchemy(app)
 
 api_blueprint = Blueprint(app, __name__)
 
