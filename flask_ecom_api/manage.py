@@ -1,8 +1,9 @@
 from flask.cli import FlaskGroup
 
-from flask_ecom_api import app
+from flask_ecom_api import create_app
 
-cli = FlaskGroup(app)  # type: ignore
+app = create_app()
+cli = FlaskGroup(create_app=create_app)
 
 
 if __name__ == '__main__':

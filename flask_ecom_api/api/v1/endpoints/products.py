@@ -1,4 +1,8 @@
-from flask_restful import Resource
+from flask import Blueprint
+from flask_restful import Api, Resource
+
+product_blueprint = Blueprint('product', __name__)
+api = Api(product_blueprint)
 
 
 class ProductListAPI(Resource):
@@ -26,3 +30,7 @@ class ProductAPI(Resource):
 
     def delete(self):
         pass
+
+
+api.add_resource(ProductListAPI, '/api/v1/products', endpoint='products')
+api.add_resource(ProductAPI, '/api/v1/products/<int:product_id>', endpoint='product')
