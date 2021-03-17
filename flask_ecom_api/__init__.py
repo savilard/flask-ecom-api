@@ -4,7 +4,7 @@ from flask import Blueprint, Flask
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
-from flask_ecom_api.v1.endpoints.products import ProductAPI, ProductListAPI
+from flask_ecom_api.api.v1.endpoints.products import ProductAPI, ProductListAPI
 
 app = Flask(__name__)
 
