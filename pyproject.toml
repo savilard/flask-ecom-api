@@ -9,7 +9,6 @@ license = "MIT"
 python = "^3.8"
 
 Flask = "^1.1.2"
-Flask-RESTful = "^0.3.8"
 flask-apispec = "^0.11.0"
 Flask-SQLAlchemy = "^2.4.4"
 
@@ -18,6 +17,7 @@ webargs = "^7.0.1"
 marshmallow = "^3.10.0"
 Flask-Migrate = "^2.7.0"
 psycopg2-binary = "^2.8.6"
+flask-restx = "^0.2.0"
 
 [tool.poetry.dev-dependencies]
 wemake-python-styleguide = "^0.15.2"
