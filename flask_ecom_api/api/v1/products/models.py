@@ -19,6 +19,23 @@ product_ingredients = db.Table(
 )
 
 
+product_categories = db.Table(
+    'product_categories',
+    db.Column(
+        'product_id',
+        db.Integer,
+        db.ForeignKey('product.id'),
+        primary_key=True,
+    ),
+    db.Column(
+        'category_id',
+        db.Integer,
+        db.ForeignKey('category.id'),
+        primary_key=True,
+    ),
+)
+
+
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(
@@ -36,6 +53,13 @@ class Product(db.Model):
     ingredients = db.relationship(
         'Ingredient',
         secondary=product_ingredients,
+        lazy='subquery',
+        backref=db.backref('products', lazy='joined'),
+    )
+
+    categories = db.relationship(
+        'Category',
+        secondary=product_categories,
         lazy='subquery',
         backref=db.backref('products', lazy='joined'),
     )
@@ -82,3 +106,29 @@ class Ingredient(db.Model):
 
     def __repr__(self):
         return f'<Ingredient id: {self.id}, ingredient name: {self.name}>'
+
+
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(
+        db.String(length=140),
+        index=True,
+        unique=True,
+        nullable=False,
+    )
+    slug = db.Column(db.String(length=140), unique=True, nullable=False)
+    description = db.Column(db.Text)
+
+    parent_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    parent = db.relationship('Category', remote_side=id, backref='subcategories')
+
+    def __init__(self, *args, **kwargs):
+        super(Category, self).__init__(*args, **kwargs)
+        self.generate_slug()
+
+    def generate_slug(self):
+        if self.name:
+            self.slug = slugify(text=self.name, max_length=140)
+
+    def __repr__(self):
+        return f'<Category id: {self.id}, category name: {self.name}>'
