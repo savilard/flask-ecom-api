@@ -27,3 +27,18 @@ class Product(db.Model):
 
     def __repr__(self):
         return f'<Product id: {self.id}, product name: {self.name}>'
+
+
+class ProductImage(db.Model):
+    """Model for product images."""
+    id = db.Column(db.Integer, primary_key=True)
+    src = db.Column(db.String(140), nullable=False)
+    product_id = db.Column(
+        db.Integer,
+        db.ForeignKey('product.id'),
+        index=True,
+        nullable=False,
+    )
+
+    def __repr__(self):
+        return f'<Image id: {self.id}, image src: {self.src}>'
