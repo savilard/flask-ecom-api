@@ -18,6 +18,7 @@ webargs = "^7.0.1"
 marshmallow = "^3.10.0"
 Flask-Migrate = "^2.7.0"
 psycopg2-binary = "^2.8.6"
+python-slugify = "^4.0.1"
 
 [tool.poetry.dev-dependencies]
 wemake-python-styleguide = "^0.15.2"
