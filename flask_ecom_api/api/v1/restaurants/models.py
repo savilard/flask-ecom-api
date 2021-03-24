@@ -1,7 +1,5 @@
 from flask_ecom_api import db
-
 from flask_ecom_api.api.v1.products.models import Product
-
 
 restaurant_couriers = db.Table(
     'restaurant_couriers',
