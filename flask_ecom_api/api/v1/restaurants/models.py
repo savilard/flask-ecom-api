@@ -51,7 +51,7 @@ class Restaurant(db.Model):
     longitude = db.Column(db.Float)
     contact_phone = db.Column(db.String(10))
 
-    restaurant_couriers = db.relationship(
+    couriers = db.relationship(
         'Courier',
         secondary=restaurant_couriers,
         lazy='subquery',
