@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_ecom_api.api.v1.products.views import product_blueprint
 
 db = SQLAlchemy()
-migrate = Migrate()
+migrate = Migrate(compare_type=True)
 
 
 def register_blueprints(app) -> None:
