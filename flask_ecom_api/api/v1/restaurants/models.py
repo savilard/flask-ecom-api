@@ -1,6 +1,23 @@
 from flask_ecom_api import db
 
 
+restaurant_couriers = db.Table(
+    'restaurant_couriers',
+    db.Column(
+        'restaurant_id',
+        db.Integer,
+        db.ForeignKey('restaurant.id'),
+        primary_key=True,
+    ),
+    db.Column(
+      'courier_id',
+      db.Integer,
+      db.ForeignKey('courier.id'),
+      primary_key=True,
+    ),
+)
+
+
 class Restaurant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(
@@ -13,6 +30,13 @@ class Restaurant(db.Model):
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
     contact_phone = db.Column(db.String(10))
+
+    restaurant_couriers = db.relationship(
+        'Courier',
+        secondary=restaurant_couriers,
+        lazy='subquery',
+        backref=db.backref('restaurants', lazy='joined'),
+    )
 
 
 class Courier(db.Model):
