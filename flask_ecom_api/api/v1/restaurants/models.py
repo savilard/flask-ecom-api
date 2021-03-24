@@ -1,5 +1,7 @@
 from flask_ecom_api import db
 
+from flask_ecom_api.api.v1.products.models import Product
+
 
 restaurant_couriers = db.Table(
     'restaurant_couriers',
@@ -14,6 +16,26 @@ restaurant_couriers = db.Table(
       db.Integer,
       db.ForeignKey('courier.id'),
       primary_key=True,
+    ),
+)
+
+restaurant_products = db.Table(
+    'restaurant_products',
+    db.Column(
+        'restaurant_id',
+        db.Integer,
+        db.ForeignKey('restaurant.id'),
+        primary_key=True,
+    ),
+    db.Column(
+        'product_id',
+        db.Integer,
+        db.ForeignKey('product.id'),
+        primary_key=True,
+    ),
+    db.Column(
+        'availability',
+        db.Boolean,
     ),
 )
 
@@ -34,6 +56,13 @@ class Restaurant(db.Model):
     restaurant_couriers = db.relationship(
         'Courier',
         secondary=restaurant_couriers,
+        lazy='subquery',
+        backref=db.backref('restaurants', lazy='joined'),
+    )
+
+    products = db.relationship(
+        Product,
+        secondary=restaurant_products,
         lazy='subquery',
         backref=db.backref('restaurants', lazy='joined'),
     )
