@@ -62,3 +62,6 @@ class Order(db.Model):
         lazy='subquery',
         backref=db.backref('orders', lazy='joined'),
     )
+
+    def __repr__(self):
+        return f'<Order id: {self.id}, order name: {self.name}>'
