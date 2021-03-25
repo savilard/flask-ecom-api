@@ -65,6 +65,9 @@ class Restaurant(db.Model):
         backref=db.backref('restaurants', lazy='joined'),
     )
 
+    def __repr__(self):
+        return f'<Restaurant id: {self.id}>'
+
 
 class Courier(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -74,3 +77,6 @@ class Courier(db.Model):
     vk_id = db.Column(db.Integer)
     tg_id = db.Column(db.Integer)
     fb_id = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f'<Courier id: {self.id}>'
