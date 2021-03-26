@@ -45,7 +45,6 @@ class Restaurant(db.Model):
     name = db.Column(
         db.String(length=140),
         index=True,
-        unique=True,
         nullable=False,
     )
     address = db.Column(db.String(length=140), index=True, unique=True)
