@@ -1,21 +1,6 @@
 from flask_ecom_api import db
 from flask_ecom_api.api.v1.products.models import Product
 
-restaurant_couriers = db.Table(
-    'restaurant_couriers',
-    db.Column(
-        'restaurant_id',
-        db.Integer,
-        db.ForeignKey('restaurant.id'),
-        primary_key=True,
-    ),
-    db.Column(
-      'courier_id',
-      db.Integer,
-      db.ForeignKey('courier.id'),
-      primary_key=True,
-    ),
-)
 
 restaurant_products = db.Table(
     'restaurant_products',
@@ -52,12 +37,7 @@ class Restaurant(db.Model):
     longitude = db.Column(db.Float)
     contact_phone = db.Column(db.String(10))
 
-    couriers = db.relationship(
-        'Courier',
-        secondary=restaurant_couriers,
-        lazy='subquery',
-        backref=db.backref('restaurants', lazy='joined'),
-    )
+    couriers = db.relationship('RestaurantCourier')
 
     products = db.relationship(
         Product,
@@ -84,3 +64,26 @@ class Courier(db.Model):
     def __repr__(self):
         """Return a printable representation of the courier class."""
         return f'<Courier id: {self.id}>'
+
+
+class RestaurantCourier(db.Model):
+    """Restaurant сourier model."""
+
+    id = db.Column(db.Integer, primary_key=True)
+    restaurant_id = db.Column(
+        db.Integer,
+        db.ForeignKey('restaurant.id'),
+        index=True,
+        nullable=False,
+    )
+    courier_id = db.Column(
+        db.Integer,
+        db.ForeignKey('courier.id'),
+        index=True,
+        nullable=False,
+    )
+    restaurant = db.relationship('Restaurant', lazy='joined')
+    courier = db.relationship('Courier', lazy='joined')
+
+    def __repr__(self):
+        return f'<RestaurantCourier restaurant: {self.restaurant_id} courier: {self.courier_id}>'
