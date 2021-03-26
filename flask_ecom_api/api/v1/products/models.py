@@ -86,6 +86,7 @@ class ProductImage(db.Model):
         index=True,
         nullable=False,
     )
+    is_main = db.Column(db.Boolean, default=False, nullable=False)
 
     def __repr__(self):
         return f'<Image id: {self.id}, image src: {self.src}>'
