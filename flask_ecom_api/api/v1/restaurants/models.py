@@ -74,9 +74,9 @@ class Courier(db.Model):
     first_name = db.Column(db.String(25))
     last_name = db.Column(db.String(25))
     contact_phone = db.Column(db.String(10), nullable=False)
-    vk_id = db.Column(db.Integer)
-    tg_id = db.Column(db.Integer)
-    fb_id = db.Column(db.Integer)
+    vk_id = db.Column(db.String(25))
+    tg_id = db.Column(db.String(25))
+    fb_id = db.Column(db.String(25))
 
     def __repr__(self):
         return f'<Courier id: {self.id}>'
