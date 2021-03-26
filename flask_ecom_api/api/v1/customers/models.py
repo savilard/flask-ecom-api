@@ -2,6 +2,8 @@ from flask_ecom_api import db
 
 
 class Customer(db.Model):
+    """Customer model."""
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(
         db.String(length=50),
@@ -24,6 +26,8 @@ class Customer(db.Model):
 
 
 class CustomerShippingAddress(db.Model):
+    """Customer shipping address model."""
+
     id = db.Column(db.Integer, primary_key=True)
     customer_id = db.Column(
         db.Integer,

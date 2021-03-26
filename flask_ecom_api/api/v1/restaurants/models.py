@@ -39,6 +39,8 @@ restaurant_products = db.Table(
 
 
 class Restaurant(db.Model):
+    """Restaurant model."""
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(
         db.String(length=140),
@@ -70,6 +72,8 @@ class Restaurant(db.Model):
 
 
 class Courier(db.Model):
+    """Courier model."""
+
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(25))
     last_name = db.Column(db.String(25))
@@ -79,4 +83,5 @@ class Courier(db.Model):
     fb_id = db.Column(db.String(25))
 
     def __repr__(self):
+        """Return a printable representation of the courier class."""
         return f'<Courier id: {self.id}>'

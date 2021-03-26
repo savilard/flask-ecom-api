@@ -31,16 +31,22 @@ order_products = db.Table(
 
 
 class OrderStatusEnum(enum.Enum):
+    """Class for choosing order statuses."""
+
     processed = 'processed'
     unprocessed = 'unprocessed'
 
 
 class PaymentMethodEnum(enum.Enum):
+    """Class for choosing payment methods."""
+
     cash = 'cash'
     card = 'card'
 
 
 class Order(db.Model):
+    """Order model."""
+
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(
         db.Enum(OrderStatusEnum),

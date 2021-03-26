@@ -37,6 +37,8 @@ product_categories = db.Table(
 
 
 class Product(db.Model):
+    """Product model."""
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(
         db.String(length=140),
@@ -69,6 +71,7 @@ class Product(db.Model):
         self.generate_slug()
 
     def generate_slug(self):
+        """Generate slug for product."""
         if self.name:
             self.slug = slugify(text=self.name, max_length=140)
 
@@ -78,6 +81,7 @@ class Product(db.Model):
 
 class ProductImage(db.Model):
     """Model for product images."""
+
     id = db.Column(db.Integer, primary_key=True)
     src = db.Column(db.String(140), nullable=False)
     product_id = db.Column(
@@ -94,6 +98,7 @@ class ProductImage(db.Model):
 
 class Ingredient(db.Model):
     """Model for product ingredient."""
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(
         db.String(length=140),
@@ -110,6 +115,8 @@ class Ingredient(db.Model):
 
 
 class Category(db.Model):
+    """Model for product category."""
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(
         db.String(length=140),
@@ -124,10 +131,12 @@ class Category(db.Model):
     parent = db.relationship('Category', remote_side=id, backref='subcategories')
 
     def __init__(self, *args, **kwargs):
+        """Init of category class."""
         super(Category, self).__init__(*args, **kwargs)
         self.generate_slug()
 
     def generate_slug(self):
+        """Generate slug for category."""
         if self.name:
             self.slug = slugify(text=self.name, max_length=140)
 
