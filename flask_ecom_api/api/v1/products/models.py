@@ -3,23 +3,6 @@ from slugify import slugify
 from flask_ecom_api import db
 
 
-product_categories = db.Table(
-    'product_categories',
-    db.Column(
-        'product_id',
-        db.Integer,
-        db.ForeignKey('product.id'),
-        primary_key=True,
-    ),
-    db.Column(
-        'category_id',
-        db.Integer,
-        db.ForeignKey('category.id'),
-        primary_key=True,
-    ),
-)
-
-
 class Product(db.Model):
     """Product model."""
 
@@ -32,13 +15,7 @@ class Product(db.Model):
     published = db.Column(db.Boolean, default=False)
 
     ingredients = db.relationship('ProductIngredient')
-
-    categories = db.relationship(
-        'Category',
-        secondary=product_categories,
-        lazy='subquery',
-        backref=db.backref('products', lazy='joined'),
-    )
+    categories = db.relationship('ProductCategory')
 
     def __init__(self, *args, **kwargs):
         super(Product, self).__init__(*args, **kwargs)
@@ -138,3 +115,23 @@ class Category(db.Model):
 
     def __repr__(self):
         return f'<Category id: {self.id}, category name: {self.name}>'
+
+
+class ProductCategory(db.Model):
+    """Product categories model."""
+
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(
+        db.Integer,
+        db.ForeignKey('product.id'),
+        index=True,
+        nullable=False,
+    )
+    category_id = db.Column(
+        db.Integer,
+        db.ForeignKey('category.id'),
+        index=True,
+        nullable=False,
+    )
+    product = db.relationship('Product', lazy='joined')
+    category = db.relationship('Category', lazy='joined')
