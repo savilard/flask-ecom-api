@@ -2,27 +2,6 @@ from flask_ecom_api import db
 from flask_ecom_api.api.v1.products.models import Product
 
 
-restaurant_products = db.Table(
-    'restaurant_products',
-    db.Column(
-        'restaurant_id',
-        db.Integer,
-        db.ForeignKey('restaurant.id'),
-        primary_key=True,
-    ),
-    db.Column(
-        'product_id',
-        db.Integer,
-        db.ForeignKey('product.id'),
-        primary_key=True,
-    ),
-    db.Column(
-        'availability',
-        db.Boolean,
-    ),
-)
-
-
 class Restaurant(db.Model):
     """Restaurant model."""
 
@@ -38,13 +17,7 @@ class Restaurant(db.Model):
     contact_phone = db.Column(db.String(10))
 
     couriers = db.relationship('RestaurantCourier')
-
-    products = db.relationship(
-        Product,
-        secondary=restaurant_products,
-        lazy='subquery',
-        backref=db.backref('restaurants', lazy='joined'),
-    )
+    products = db.relationship('RestaurantProduct')
 
     def __repr__(self):
         return f'<Restaurant id: {self.id}>'
@@ -87,3 +60,28 @@ class RestaurantCourier(db.Model):
 
     def __repr__(self):
         return f'<RestaurantCourier restaurant: {self.restaurant_id} courier: {self.courier_id}>'
+
+
+class RestaurantProduct(db.Model):
+    """Restaurant product model."""
+
+    id = db.Column(db.Integer, primary_key=True)
+    restaurant_id = db.Column(
+        db.Integer,
+        db.ForeignKey('restaurant.id'),
+        index=True,
+        nullable=False,
+    )
+    product_id = db.Column(
+        db.Integer,
+        db.ForeignKey('product.id'),
+        index=True,
+        nullable=False,
+    )
+    availability = db.Column(db.Boolean)
+
+    restaurant = db.relationship('Restaurant', lazy='joined')
+    product = db.relationship(Product, lazy='joined')
+
+    def __repr__(self):
+        return f'<RestaurantProduct restaurant: {self.restaurant_id} product: {self.product_id}>'
