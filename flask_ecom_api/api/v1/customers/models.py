@@ -17,6 +17,8 @@ class Customer(db.Model):
         nullable=False,
     )
 
+    shipping_addresses = db.relationship('CustomerShippingAddress', backref='customer', lazy='joined')
+
     def __repr__(self):
         return f'<Customer id: {self.id}, customer name: {self.name}>'
 
