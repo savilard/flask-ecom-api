@@ -4,31 +4,6 @@ from datetime import datetime
 from flask_ecom_api import db
 from flask_ecom_api.api.v1.products.models import Product
 
-order_products = db.Table(
-    'order_products',
-    db.Column(
-        'order_id',
-        db.Integer,
-        db.ForeignKey('order.id'),
-        primary_key=True,
-    ),
-    db.Column(
-        'product_id',
-        db.Integer,
-        db.ForeignKey('product.id'),
-        primary_key=True,
-    ),
-    db.Column(
-        'quantity',
-        db.Integer,
-    ),
-    db.Column(
-        'cost',
-        db.DECIMAL(10, 2),
-        default=0,
-    ),
-)
-
 
 class OrderStatusEnum(enum.Enum):
     """Class for choosing order statuses."""
@@ -62,12 +37,33 @@ class Order(db.Model):
     delivered_at = db.Column(db.DateTime)
     comment = db.Column(db.Text)
 
-    products = db.relationship(
-        Product,
-        secondary=order_products,
-        lazy='subquery',
-        backref=db.backref('orders', lazy='joined'),
-    )
+    products = db.relationship('OrderProduct')
 
     def __repr__(self):
         return f'<Order id: {self.id}, order name: {self.name}>'
+
+
+class OrderProduct(db.Model):
+    """Order product model."""
+
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(
+        db.Integer,
+        db.ForeignKey('order.id'),
+        index=True,
+        nullable=False,
+    )
+    product_id = db.Column(
+        db.Integer,
+        db.ForeignKey('product.id'),
+        index=True,
+        nullable=False,
+    )
+    quantity = db.Column(db.Integer, default=0)
+    cost = db.Column(db.DECIMAL(10, 2), default=0)
+
+    order = db.relationship('Order', lazy='joined')
+    product = db.relationship(Product, lazy='joined')
+
+    def __repr__(self):
+        return f'<OrderProduct order: {self.order_id} product: {self.product_id}>'
