@@ -40,13 +40,8 @@ class Product(db.Model):
     """Product model."""
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(
-        db.String(length=140),
-        index=True,
-        unique=True,
-        nullable=False,
-    )
-    slug = db.Column(db.String(length=140), unique=True, nullable=False)
+    name = db.Column(db.String(length=140), index=True, nullable=False)
+    slug = db.Column(db.String(length=140), nullable=False)
     description = db.Column(db.Text)
     images = db.relationship('ProductImage', backref='product', lazy='joined')
     price = db.Column(db.DECIMAL(10, 2), default=0)
@@ -73,7 +68,10 @@ class Product(db.Model):
     def generate_slug(self):
         """Generate slug for product."""
         if self.name:
-            self.slug = slugify(text=self.name, max_length=140)
+            self.slug = '{product_id}-{slug}'.format(
+                product_id=self.id,
+                slug=slugify(text=self.name, max_length=140),
+            )
 
     def __repr__(self):
         return f'<Product id: {self.id}, product name: {self.name}>'
