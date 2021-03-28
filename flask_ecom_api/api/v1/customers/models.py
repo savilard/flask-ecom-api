@@ -46,5 +46,7 @@ class CustomerShippingAddress(db.Model):
     postcode = db.Column(db.Integer, nullable=False)
     comment = db.Column(db.String(140))
 
+    customers = db.relationship('Customer', lazy='joined')
+
     def __repr__(self):
         return f'<Customer shipping address id: {self.id}>'
