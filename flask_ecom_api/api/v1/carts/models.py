@@ -21,6 +21,9 @@ class Cart(db.Model):
 
     products = db.relationship('CartProduct')
 
+    def __repr__(self):
+        return f'<Cart id: {self.id}, customer id: {self.customer_id}>'
+
 
 class CartProduct(db.Model):
     """Cart product model."""
