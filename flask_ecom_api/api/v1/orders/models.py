@@ -37,6 +37,14 @@ class Order(db.Model):
     delivered_at = db.Column(db.DateTime)
     comment = db.Column(db.Text)
 
+    customer_id = db.Column(
+        db.Integer,
+        db.ForeignKey('customer.id'),
+        index=True,
+        nullable=False,
+    )
+
+    customer = db.relationship('Customer', lazy='joined')
     products = db.relationship('OrderProduct')
 
     def __repr__(self):
