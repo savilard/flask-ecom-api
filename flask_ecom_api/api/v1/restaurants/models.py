@@ -16,8 +16,8 @@ class Restaurant(db.Model):
     longitude = db.Column(db.Float)
     contact_phone = db.Column(db.String(10))
 
-    couriers = db.relationship('RestaurantCourier')
-    products = db.relationship('RestaurantProduct')
+    couriers = db.relationship('RestaurantCourier', lazy='joined')
+    products = db.relationship('RestaurantProduct', lazy='joined')
 
     def __repr__(self):
         return f'<Restaurant id: {self.id}>'
