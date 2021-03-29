@@ -1,5 +1,4 @@
 from flask_ecom_api import db
-from flask_ecom_api.api.v1.carts.models import Cart
 
 
 class Customer(db.Model):
@@ -21,7 +20,6 @@ class Customer(db.Model):
     )
 
     shipping_addresses = db.relationship('CustomerShippingAddress', backref='customer', lazy='joined')
-    cart = db.relationship(Cart, uselist=False, backref='customer', lazy='joined')
 
     def __repr__(self):
         return f'<Customer id: {self.id}, customer name: {self.name}>'
