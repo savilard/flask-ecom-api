@@ -13,7 +13,7 @@ class Cart(db.Model):
     updated_at = db.Column(db.DateTime)
     expires_at = db.Column(db.DateTime)
 
-    products = db.relationship('CartProduct')
+    products = db.relationship('CartProduct', lazy='joined')
 
     def __repr__(self):
         return f'<Cart id: {self.id}, customer id: {self.customer_id}>'
