@@ -45,7 +45,7 @@ class Order(db.Model):
     )
 
     customer = db.relationship('Customer', lazy='joined')
-    products = db.relationship('OrderProduct')
+    products = db.relationship('OrderProduct', lazy='joined')
 
     def __repr__(self):
         return f'<Order id: {self.id}, order name: {self.name}>'
