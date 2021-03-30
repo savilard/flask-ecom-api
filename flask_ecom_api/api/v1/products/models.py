@@ -14,8 +14,8 @@ class Product(db.Model):
     price = db.Column(db.DECIMAL(10, 2), default=0)
     published = db.Column(db.Boolean, default=False)
 
-    ingredients = db.relationship('ProductIngredient', lazy='joined')
-    categories = db.relationship('ProductCategory', lazy='joined')
+    ingredients = db.relationship('ProductIngredient', lazy='joined', back_populates='product')
+    categories = db.relationship('ProductCategory', lazy='joined', back_populates='product')
 
     def __init__(self, *args, **kwargs):
         super(Product, self).__init__(*args, **kwargs)
