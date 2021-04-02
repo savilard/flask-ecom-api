@@ -15,7 +15,11 @@ class Product(db.Model):
     published = db.Column(db.Boolean, default=False)
 
     ingredients = db.relationship('ProductIngredient', lazy='joined', back_populates='product')
-    categories = db.relationship('ProductCategory', lazy='joined', back_populates='product')
+    categories = db.relationship(
+        'Category',
+        secondary='product_category',
+        lazy='joined',
+    )
 
     def __init__(self, *args, **kwargs):
         super(Product, self).__init__(*args, **kwargs)
