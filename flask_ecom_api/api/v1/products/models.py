@@ -8,14 +8,22 @@ class Product(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(length=140), index=True, nullable=False)
-    slug = db.Column(db.String(length=140), nullable=False)
+    slug = db.Column(db.String(length=140))
     description = db.Column(db.Text)
     images = db.relationship('ProductImage', backref='product', lazy='joined')
     price = db.Column(db.DECIMAL(10, 2), default=0)
     published = db.Column(db.Boolean, default=False)
 
-    ingredients = db.relationship('ProductIngredient', lazy='joined', back_populates='product')
-    categories = db.relationship('ProductCategory', lazy='joined', back_populates='product')
+    ingredients = db.relationship(
+        'Ingredient',
+        secondary='product_ingredient',
+        lazy='joined',
+    )
+    categories = db.relationship(
+        'Category',
+        secondary='product_category',
+        lazy='joined',
+    )
 
     def __init__(self, *args, **kwargs):
         super(Product, self).__init__(*args, **kwargs)
@@ -30,7 +38,7 @@ class Product(db.Model):
             )
 
     def __repr__(self):
-        return f'<Product id: {self.id}, product name: {self.name}>'
+        return self.name
 
 
 class ProductImage(db.Model):
@@ -47,7 +55,7 @@ class ProductImage(db.Model):
     is_main = db.Column(db.Boolean, default=False, nullable=False)
 
     def __repr__(self):
-        return f'<Image id: {self.id}, image src: {self.src}>'
+        return self.src
 
 
 class Ingredient(db.Model):
@@ -65,7 +73,7 @@ class Ingredient(db.Model):
     price = db.Column(db.DECIMAL(10, 2), default=0)
 
     def __repr__(self):
-        return f'<Ingredient id: {self.id}, ingredient name: {self.name}>'
+        return self.name
 
 
 class ProductIngredient(db.Model):
@@ -97,7 +105,7 @@ class Category(db.Model):
         unique=True,
         nullable=False,
     )
-    slug = db.Column(db.String(length=140), unique=True, nullable=False)
+    slug = db.Column(db.String(length=140))
     description = db.Column(db.Text)
 
     parent_id = db.Column(db.Integer, db.ForeignKey('category.id'))
@@ -114,7 +122,7 @@ class Category(db.Model):
             self.slug = slugify(text=self.name, max_length=140)
 
     def __repr__(self):
-        return f'<Category id: {self.id}, category name: {self.name}>'
+        return self.name
 
 
 class ProductCategory(db.Model):
