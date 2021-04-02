@@ -1,6 +1,7 @@
+from flask_admin.contrib.sqla import ModelView
 from slugify import slugify
 
-from flask_ecom_api import db
+from flask_ecom_api import admin, db
 
 
 class Product(db.Model):
@@ -143,3 +144,8 @@ class ProductCategory(db.Model):
     )
     product = db.relationship('Product', lazy='joined')
     category = db.relationship('Category', lazy='joined')
+
+
+admin.add_view(ModelView(Product, db.session))
+admin.add_view(ModelView(Category, db.session))
+admin.add_view(ModelView(Ingredient, db.session))
