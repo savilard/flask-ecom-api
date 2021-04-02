@@ -14,7 +14,11 @@ class Product(db.Model):
     price = db.Column(db.DECIMAL(10, 2), default=0)
     published = db.Column(db.Boolean, default=False)
 
-    ingredients = db.relationship('ProductIngredient', lazy='joined', back_populates='product')
+    ingredients = db.relationship(
+        'Ingredient',
+        secondary='product_ingredient',
+        lazy='joined',
+    )
     categories = db.relationship(
         'Category',
         secondary='product_category',
