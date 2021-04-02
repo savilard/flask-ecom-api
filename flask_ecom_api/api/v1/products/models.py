@@ -30,7 +30,7 @@ class Product(db.Model):
             )
 
     def __repr__(self):
-        return f'<Product id: {self.id}, product name: {self.name}>'
+        return self.name
 
 
 class ProductImage(db.Model):
@@ -47,7 +47,7 @@ class ProductImage(db.Model):
     is_main = db.Column(db.Boolean, default=False, nullable=False)
 
     def __repr__(self):
-        return f'<Image id: {self.id}, image src: {self.src}>'
+        return self.src
 
 
 class Ingredient(db.Model):
@@ -65,7 +65,7 @@ class Ingredient(db.Model):
     price = db.Column(db.DECIMAL(10, 2), default=0)
 
     def __repr__(self):
-        return f'<Ingredient id: {self.id}, ingredient name: {self.name}>'
+        return self.name
 
 
 class ProductIngredient(db.Model):
@@ -114,7 +114,7 @@ class Category(db.Model):
             self.slug = slugify(text=self.name, max_length=140)
 
     def __repr__(self):
-        return f'<Category id: {self.id}, category name: {self.name}>'
+        return self.name
 
 
 class ProductCategory(db.Model):
