@@ -2,6 +2,7 @@ from flask_admin.contrib.sqla import ModelView
 from slugify import slugify
 
 from flask_ecom_api import admin, db
+from flask_ecom_api.api.v1.products.admin import ImageView
 
 
 class Product(db.Model):
@@ -51,7 +52,6 @@ class ProductImage(db.Model):
         db.Integer,
         db.ForeignKey('product.id'),
         index=True,
-        nullable=False,
     )
     is_main = db.Column(db.Boolean, default=False, nullable=False)
 
@@ -149,3 +149,4 @@ class ProductCategory(db.Model):
 admin.add_view(ModelView(Product, db.session))
 admin.add_view(ModelView(Category, db.session))
 admin.add_view(ModelView(Ingredient, db.session))
+admin.add_view(ImageView(ProductImage, db.session))
