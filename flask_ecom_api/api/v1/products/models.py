@@ -8,7 +8,7 @@ class Product(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(length=140), index=True, nullable=False)
-    slug = db.Column(db.String(length=140), nullable=False)
+    slug = db.Column(db.String(length=140))
     description = db.Column(db.Text)
     images = db.relationship('ProductImage', backref='product', lazy='joined')
     price = db.Column(db.DECIMAL(10, 2), default=0)
@@ -97,7 +97,7 @@ class Category(db.Model):
         unique=True,
         nullable=False,
     )
-    slug = db.Column(db.String(length=140), unique=True, nullable=False)
+    slug = db.Column(db.String(length=140))
     description = db.Column(db.Text)
 
     parent_id = db.Column(db.Integer, db.ForeignKey('category.id'))
