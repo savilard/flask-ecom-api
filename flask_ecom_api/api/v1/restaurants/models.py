@@ -1,3 +1,5 @@
+from sqlalchemy_utils import PhoneNumberType
+
 from flask_ecom_api import db
 from flask_ecom_api.api.v1.products.models import Product
 
@@ -14,7 +16,7 @@ class Restaurant(db.Model):
     address = db.Column(db.String(length=140), index=True, unique=True)
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
-    contact_phone = db.Column(db.String(10))
+    contact_phone = db.Column(PhoneNumberType())
 
     couriers = db.relationship('RestaurantCourier', lazy='joined', back_populates='restaurant')
     products = db.relationship('RestaurantProduct', lazy='joined', back_populates='restaurant')
@@ -29,7 +31,7 @@ class Courier(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(25))
     last_name = db.Column(db.String(25))
-    contact_phone = db.Column(db.String(10), nullable=False)
+    contact_phone = db.Column(PhoneNumberType(), nullable=False)
     vk_id = db.Column(db.String(25))
     tg_id = db.Column(db.String(25))
     fb_id = db.Column(db.String(25))
