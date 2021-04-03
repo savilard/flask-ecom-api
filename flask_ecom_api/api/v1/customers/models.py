@@ -1,4 +1,6 @@
-from flask_ecom_api import db
+from flask_admin.contrib.sqla import ModelView
+
+from flask_ecom_api import db, admin
 
 
 class Customer(db.Model):
@@ -51,3 +53,16 @@ class CustomerShippingAddress(db.Model):
 
     def __repr__(self):
         return f'<Customer shipping address id: {self.id}>'
+
+
+admin.add_view(ModelView(
+    Customer,
+    db.session,
+    category='Customers',
+))
+
+admin.add_view(ModelView(
+    CustomerShippingAddress,
+    db.session,
+    category='Customers',
+))
