@@ -146,7 +146,7 @@ class ProductCategory(db.Model):
     category = db.relationship('Category', lazy='joined')
 
 
-admin.add_view(ModelView(Product, db.session))
-admin.add_view(ModelView(Category, db.session))
-admin.add_view(ModelView(Ingredient, db.session))
-admin.add_view(ImageView(ProductImage, db.session))
+admin.add_view(ModelView(Product, db.session, category='Products'))
+admin.add_view(ModelView(Category, db.session, category='Products'))
+admin.add_view(ModelView(Ingredient, db.session, category='Products'))
+admin.add_view(ImageView(ProductImage, db.session, category='Products'))
