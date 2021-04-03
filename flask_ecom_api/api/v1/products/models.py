@@ -1,8 +1,12 @@
-from flask_admin.contrib.sqla import ModelView
 from slugify import slugify
 
 from flask_ecom_api import admin, db
-from flask_ecom_api.api.v1.common.custom_admin_views import ImageView
+from flask_ecom_api.api.v1.products.admin import (
+    CategoryAdminView,
+    IngredientAdminView,
+    ProductAdminView,
+    ProductImageAdminView,
+)
 
 
 class Product(db.Model):
@@ -146,7 +150,7 @@ class ProductCategory(db.Model):
     category = db.relationship('Category', lazy='joined')
 
 
-admin.add_view(ModelView(Product, db.session, category='Products'))
-admin.add_view(ModelView(Category, db.session, category='Products'))
-admin.add_view(ModelView(Ingredient, db.session, category='Products'))
-admin.add_view(ImageView(ProductImage, db.session, category='Products'))
+admin.add_view(ProductAdminView(Product, db.session, category='Products'))
+admin.add_view(CategoryAdminView(Category, db.session, category='Products'))
+admin.add_view(IngredientAdminView(Ingredient, db.session, category='Products'))
+admin.add_view(ProductImageAdminView(ProductImage, db.session, category='Products'))

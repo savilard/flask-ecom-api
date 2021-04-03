@@ -1,5 +1,7 @@
 from flask_admin.contrib.sqla import ModelView
 
+from flask_ecom_api.api.v1.common.custom_admin_views import ImageView
+
 
 class ProductAdminView(ModelView):
     can_view_details = True
@@ -20,8 +22,7 @@ class IngredientAdminView(ModelView):
     please_do_show_primary_keys_value = True
 
 
-class CustomerAdminView(ModelView):
+class ProductImageAdminView(ImageView):
     can_view_details = True
-    column_display_pk = True
-    column_list = ('id', 'name', 'email',)
+    column_list = ('id', 'src', 'is_main', 'product', )
     please_do_show_primary_keys_value = True
