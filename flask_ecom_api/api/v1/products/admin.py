@@ -1,9 +1,9 @@
 from flask_admin.contrib.sqla import ModelView
 
-from flask_ecom_api.api.v1.common.custom_admin_views import ImageView
+from flask_ecom_api.api.v1.common.custom_admin_views import ImageView, BaseModelView
 
 
-class ProductAdminView(ModelView):
+class ProductAdminView(BaseModelView):
     """Product admin view."""
 
     can_view_details = True
@@ -12,7 +12,7 @@ class ProductAdminView(ModelView):
     please_do_show_primary_keys_value = True
 
 
-class CategoryAdminView(ModelView):
+class CategoryAdminView(BaseModelView):
     """Category admin view."""
 
     can_view_details = True

@@ -37,11 +37,10 @@ class Product(db.Model):
 
     def generate_slug(self):
         """Generate slug for product."""
-        if self.name:
-            self.slug = '{product_id}-{slug}'.format(
-                product_id=self.id,
-                slug=slugify(text=self.name, max_length=140),
-            )
+        self.slug = '{id}-{slug}'.format(
+            id=self.id,
+            slug=slugify(text=self.name, max_length=140, lowercase=True),
+        )
 
     def __repr__(self):
         return self.name
