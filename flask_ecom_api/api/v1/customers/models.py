@@ -1,3 +1,5 @@
+from sqlalchemy_utils import EmailType, PhoneNumberType
+
 from flask_ecom_api import db
 
 
@@ -13,10 +15,10 @@ class Customer(db.Model):
     )
     date_of_birth = db.Column(db.DateTime)
     email = db.Column(
-        db.String(length=50),
-        index=True,
-        unique=True,
-        nullable=False,
+        EmailType,
+        # index=True,
+        # unique=True,
+        # nullable=False,
     )
 
     shipping_addresses = db.relationship('CustomerShippingAddress', backref='customer', lazy='joined')
@@ -38,7 +40,7 @@ class CustomerShippingAddress(db.Model):
     )
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
-    phone_number = db.Column(db.String(10), nullable=False)
+    phone_number = db.Column(PhoneNumberType())
     country = db.Column(db.String(20), nullable=False)
     city = db.Column(db.String(20), nullable=False)
     street = db.Column(db.String(20), nullable=False)
