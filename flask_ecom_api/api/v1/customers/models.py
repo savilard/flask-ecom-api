@@ -1,6 +1,8 @@
-from flask_admin.contrib.sqla import ModelView
-
-from flask_ecom_api import db, admin
+from flask_ecom_api import admin, db
+from flask_ecom_api.api.v1.customers.admin import (
+    CustomerAdminView,
+    CustomerShippingAddressAdminView,
+)
 
 
 class Customer(db.Model):
@@ -55,13 +57,13 @@ class CustomerShippingAddress(db.Model):
         return f'<Customer shipping address id: {self.id}>'
 
 
-admin.add_view(ModelView(
+admin.add_view(CustomerAdminView(
     Customer,
     db.session,
     category='Customers',
 ))
 
-admin.add_view(ModelView(
+admin.add_view(CustomerShippingAddressAdminView(
     CustomerShippingAddress,
     db.session,
     category='Customers',
