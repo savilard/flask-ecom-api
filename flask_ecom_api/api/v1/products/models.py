@@ -2,7 +2,7 @@ from flask_admin.contrib.sqla import ModelView
 from slugify import slugify
 
 from flask_ecom_api import admin, db
-from flask_ecom_api.api.v1.products.admin import ImageView
+from flask_ecom_api.api.v1.common.custom_admin_views import ImageView
 
 
 class Product(db.Model):
