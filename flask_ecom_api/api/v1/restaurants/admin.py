@@ -2,10 +2,11 @@ from flask_admin.contrib.sqla import ModelView
 
 
 class RestaurantAdminView(ModelView):
+    """Restaurant admin view."""
+
     can_view_details = True
     column_display_pk = True
     column_list = (
-        'id',
         'name',
         'address',
         'latitude',
@@ -16,10 +17,11 @@ class RestaurantAdminView(ModelView):
 
 
 class CourierAdminView(ModelView):
+    """Courier admin view."""
+
     can_view_details = True
     column_display_pk = True
     column_list = (
-        'id',
         'first_name',
         'last_name',
         'contact_phone',
@@ -31,10 +33,11 @@ class CourierAdminView(ModelView):
 
 
 class RestaurantCourierAdminView(ModelView):
+    """Restaurant courier admin view."""
+
     can_view_details = True
     column_display_pk = True
     column_list = (
-        'id',
         'courier.first_name',
         'courier.last_name',
         'courier.contact_phone',
@@ -44,14 +47,13 @@ class RestaurantCourierAdminView(ModelView):
 
 
 class RestaurantProductAdminView(ModelView):
+    """Restaurant product admin view."""
+
     can_view_details = True
     column_display_pk = True
     column_list = (
-        'id',
         'product.name',
         'restaurant.name',
         'availability',
     )
     please_do_show_primary_keys_value = True
-
-
