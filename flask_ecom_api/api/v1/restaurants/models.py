@@ -1,5 +1,12 @@
-from flask_ecom_api import db
+from flask_admin.contrib.sqla import ModelView
+
+from flask_ecom_api import admin, db
 from flask_ecom_api.api.v1.products.models import Product
+from flask_ecom_api.api.v1.restaurants.admin import (
+    CourierAdminView,
+    RestaurantAdminView,
+    RestaurantCourierAdminView, RestaurantProductAdminView,
+)
 
 
 class Restaurant(db.Model):
@@ -85,3 +92,9 @@ class RestaurantProduct(db.Model):
 
     def __repr__(self):
         return f'<RestaurantProduct restaurant: {self.restaurant_id} product: {self.product_id}>'
+
+
+admin.add_view(RestaurantAdminView(Restaurant, db.session, category='Restaurants'))
+admin.add_view(CourierAdminView(Courier, db.session, category='Restaurants'))
+admin.add_view(RestaurantCourierAdminView(RestaurantCourier, db.session, category='Restaurants'))
+admin.add_view(RestaurantProductAdminView(RestaurantProduct, db.session, category='Restaurants'))
