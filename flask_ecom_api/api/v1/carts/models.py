@@ -41,7 +41,7 @@ class CartProduct(db.Model):
     restaurant_product = db.relationship(RestaurantProduct, lazy='joined')
 
     __table_args__ = (
-        db.CheckConstraint(quantity >= 0, name='check_quantity_non_negative'),
+        db.CheckConstraint(quantity >= 0, name='check_cart_product_quantity_non_negative'),
         {},
     )
 
