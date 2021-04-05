@@ -1,5 +1,3 @@
-from flask_admin.contrib.sqla import ModelView
-
 from flask_ecom_api import admin, db
 from sqlalchemy_utils import PhoneNumberType
 
@@ -7,7 +5,8 @@ from flask_ecom_api.api.v1.products.models import Product
 from flask_ecom_api.api.v1.restaurants.admin import (
     CourierAdminView,
     RestaurantAdminView,
-    RestaurantCourierAdminView, RestaurantProductAdminView,
+    RestaurantCourierAdminView,
+    RestaurantProductAdminView,
 )
 
 

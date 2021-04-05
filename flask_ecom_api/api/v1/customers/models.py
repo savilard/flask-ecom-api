@@ -24,7 +24,11 @@ class Customer(db.Model):
         nullable=False,
     )
 
-    shipping_addresses = db.relationship('CustomerShippingAddress', backref='customer', lazy='joined')
+    shipping_addresses = db.relationship(
+        'CustomerShippingAddress',
+        backref='customer',
+        lazy='joined',
+    )
     orders = db.relationship('Order', lazy='joined')
 
     def __repr__(self):
@@ -58,14 +62,18 @@ class CustomerShippingAddress(db.Model):
         return f'<Customer shipping address id: {self.id}>'
 
 
-admin.add_view(CustomerAdminView(
-    Customer,
-    db.session,
-    category='Customers',
-))
+admin.add_view(
+    CustomerAdminView(
+        Customer,
+        db.session,
+        category='Customers',
+    ),
+)
 
-admin.add_view(CustomerShippingAddressAdminView(
-    CustomerShippingAddress,
-    db.session,
-    category='Customers',
-))
+admin.add_view(
+    CustomerShippingAddressAdminView(
+        CustomerShippingAddress,
+        db.session,
+        category='Customers',
+    ),
+)

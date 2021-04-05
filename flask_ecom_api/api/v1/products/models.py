@@ -82,6 +82,7 @@ class Ingredient(db.Model):
 
 class ProductIngredient(db.Model):
     """Product ingredients model."""
+
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(
         db.Integer,
