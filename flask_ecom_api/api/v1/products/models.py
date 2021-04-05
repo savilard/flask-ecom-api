@@ -35,7 +35,7 @@ class Product(db.Model):
         super(Product, self).__init__(*args, **kwargs)
         self.generate_slug()
 
-    def generate_slug(self):
+    def generate_slug(self) ->None:
         """Generate slug for product."""
         self.slug = '{id}-{slug}'.format(
             id=self.id,
@@ -121,7 +121,7 @@ class Category(db.Model):
         super(Category, self).__init__(*args, **kwargs)
         self.generate_slug()
 
-    def generate_slug(self):
+    def generate_slug(self) -> None:
         """Generate slug for category."""
         if self.name:
             self.slug = slugify(text=self.name, max_length=140)

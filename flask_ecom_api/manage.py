@@ -26,6 +26,6 @@ if __name__ == '__main__':
     app = create_app()
     migrate = Migrate(app, db)
     cli = FlaskGroup(create_app=create_app)
-    cli.add_command('db', MigrateCommand)
+    cli.add_command('db', MigrateCommand)  # type: ignore
 
     cli()
