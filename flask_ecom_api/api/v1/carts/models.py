@@ -40,5 +40,10 @@ class CartProduct(db.Model):
     cart = db.relationship('Cart', lazy='joined')
     restaurant_product = db.relationship(RestaurantProduct, lazy='joined')
 
+    __table_args__ = (
+        db.CheckConstraint(quantity >= 0, name='check_quantity_non_negative'),
+        {},
+    )
+
     def __repr__(self):
         return f'<CartProduct id: {self.id}>'
