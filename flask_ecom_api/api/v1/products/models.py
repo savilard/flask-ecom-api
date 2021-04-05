@@ -14,6 +14,11 @@ class Product(db.Model):
     price = db.Column(db.DECIMAL(10, 2), default=0)
     published = db.Column(db.Boolean, default=False)
 
+    __table_args__ = (
+        db.CheckConstraint(price >= 0, name='check_product_price_non_negative'),
+        {},
+    )
+
     ingredients = db.relationship(
         'Ingredient',
         secondary='product_ingredient',
