@@ -16,9 +16,9 @@ class Customer(db.Model):
     date_of_birth = db.Column(db.DateTime)
     email = db.Column(
         EmailType,
-        # index=True,
-        # unique=True,
-        # nullable=False,
+        index=True,
+        unique=True,
+        nullable=False,
     )
 
     shipping_addresses = db.relationship('CustomerShippingAddress', backref='customer', lazy='joined')
