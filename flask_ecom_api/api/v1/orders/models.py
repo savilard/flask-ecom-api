@@ -78,6 +78,10 @@ class OrderProduct(db.Model):
             quantity >= 0,
             name='check_order_product_quantity_non_negative',
         ),
+        db.CheckConstraint(
+            cost >= 0,
+            name='check_order_product_cost_non_negative',
+        ),
         {},
     )
 
