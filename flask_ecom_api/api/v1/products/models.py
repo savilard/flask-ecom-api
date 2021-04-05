@@ -77,6 +77,12 @@ class Ingredient(db.Model):
     weight = db.Column(db.Integer, default=0)
     price = db.Column(db.DECIMAL(10, 2), default=0)
 
+    __table_args__ = (
+        db.CheckConstraint(price >= 0, name='check_ingredient_price_non_negative'),
+        db.CheckConstraint(weight >= 0, name='check_ingredient_weight_non_negative'),
+        {},
+    )
+
     def __repr__(self):
         return self.name
 
