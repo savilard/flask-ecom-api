@@ -1,9 +1,10 @@
+from sqlalchemy_utils import EmailType, PhoneNumberType
+
 from flask_ecom_api import admin, db
 from flask_ecom_api.api.v1.customers.admin import (
     CustomerAdminView,
     CustomerShippingAddressAdminView,
 )
-from sqlalchemy_utils import EmailType, PhoneNumberType
 
 
 class Customer(db.Model):
@@ -24,10 +25,15 @@ class Customer(db.Model):
         nullable=False,
     )
 
-    shipping_addresses = db.relationship('CustomerShippingAddress', backref='customer', lazy='joined')
+    shipping_addresses = db.relationship(
+        'CustomerShippingAddress',
+        backref='customer',
+        lazy='joined',
+    )
     orders = db.relationship('Order', lazy='joined')
 
     def __repr__(self):
+        """Printable representation of Customer model."""
         return f'<Customer id: {self.id}, customer name: {self.name}>'
 
 
@@ -55,17 +61,22 @@ class CustomerShippingAddress(db.Model):
     customers = db.relationship('Customer', lazy='joined')
 
     def __repr__(self):
+        """Printable representation of CustomerShippingAddress model."""
         return f'<Customer shipping address id: {self.id}>'
 
 
-admin.add_view(CustomerAdminView(
-    Customer,
-    db.session,
-    category='Customers',
-))
+admin.add_view(
+    CustomerAdminView(
+        Customer,
+        db.session,
+        category='Customers',
+    ),
+)
 
-admin.add_view(CustomerShippingAddressAdminView(
-    CustomerShippingAddress,
-    db.session,
-    category='Customers',
-))
+admin.add_view(
+    CustomerShippingAddressAdminView(
+        CustomerShippingAddress,
+        db.session,
+        category='Customers',
+    ),
+)

@@ -48,7 +48,8 @@ class Order(db.Model):
     products = db.relationship('OrderProduct', lazy='joined')
 
     def __repr__(self):
-        return f'<Order id: {self.id}, order name: {self.name}>'
+        """Printable representation of Order model."""
+        return f'<Order id: {self.id}>'
 
 
 class OrderProduct(db.Model):
@@ -74,4 +75,5 @@ class OrderProduct(db.Model):
     product = db.relationship(Product, lazy='joined')
 
     def __repr__(self):
+        """Printable representation of OrderProduct model."""
         return f'<OrderProduct order: {self.order_id} product: {self.product_id}>'

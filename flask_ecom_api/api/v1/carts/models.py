@@ -16,7 +16,8 @@ class Cart(db.Model):
     products = db.relationship('CartProduct', lazy='joined', back_populates='cart')
 
     def __repr__(self):
-        return f'<Cart id: {self.id}, customer id: {self.customer_id}>'
+        """Printable representation of Cart model."""
+        return f'<Cart id: {self.id}, reference: {self.reference}>'
 
 
 class CartProduct(db.Model):
@@ -41,4 +42,5 @@ class CartProduct(db.Model):
     restaurant_product = db.relationship(RestaurantProduct, lazy='joined')
 
     def __repr__(self):
+        """Printable representation of CartProduct model."""
         return f'<CartProduct id: {self.id}>'

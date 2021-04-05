@@ -32,10 +32,11 @@ class Product(db.Model):
     )
 
     def __init__(self, *args, **kwargs):
-        super(Product, self).__init__(*args, **kwargs)
+        """Product model init."""
+        super().__init__(*args, **kwargs)
         self.generate_slug()
 
-    def generate_slug(self):
+    def generate_slug(self) -> None:
         """Generate slug for product."""
         self.slug = '{id}-{slug}'.format(
             id=self.id,
@@ -43,6 +44,7 @@ class Product(db.Model):
         )
 
     def __repr__(self):
+        """Printable representation of Product model."""
         return self.name
 
 
@@ -59,6 +61,7 @@ class ProductImage(db.Model):
     is_main = db.Column(db.Boolean, default=False, nullable=False)
 
     def __repr__(self):
+        """Printable representation of ProductImage model."""
         return self.src
 
 
@@ -77,11 +80,13 @@ class Ingredient(db.Model):
     price = db.Column(db.DECIMAL(10, 2), default=0)
 
     def __repr__(self):
+        """Printable representation of Ingredient model."""
         return self.name
 
 
 class ProductIngredient(db.Model):
     """Product ingredients model."""
+
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(
         db.Integer,
@@ -117,15 +122,16 @@ class Category(db.Model):
 
     def __init__(self, *args, **kwargs):
         """Init of category class."""
-        super(Category, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.generate_slug()
 
-    def generate_slug(self):
+    def generate_slug(self) -> None:
         """Generate slug for category."""
         if self.name:
             self.slug = slugify(text=self.name, max_length=140)
 
     def __repr__(self):
+        """Printable representation of Category model."""
         return self.name
 
 
