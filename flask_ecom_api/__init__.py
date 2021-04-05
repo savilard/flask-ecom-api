@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flask_admin import Admin
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
@@ -8,6 +9,7 @@ from flask_ecom_api.api.v1.products.views import product_blueprint
 
 db = SQLAlchemy()
 migrate = Migrate(compare_type=True)
+admin = Admin(template_mode='bootstrap4')
 
 
 def register_blueprints(app) -> None:
@@ -23,6 +25,7 @@ def create_app() -> Flask:
 
     db.init_app(app)
     migrate.init_app(app, db)
+    admin.init_app(app)
 
     register_blueprints(app)
 

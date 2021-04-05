@@ -1,6 +1,12 @@
 from slugify import slugify
 
-from flask_ecom_api import db
+from flask_ecom_api import admin, db
+from flask_ecom_api.api.v1.products.admin import (
+    CategoryAdminView,
+    IngredientAdminView,
+    ProductAdminView,
+    ProductImageAdminView,
+)
 
 
 class Product(db.Model):
@@ -31,11 +37,10 @@ class Product(db.Model):
 
     def generate_slug(self):
         """Generate slug for product."""
-        if self.name:
-            self.slug = '{product_id}-{slug}'.format(
-                product_id=self.id,
-                slug=slugify(text=self.name, max_length=140),
-            )
+        self.slug = '{id}-{slug}'.format(
+            id=self.id,
+            slug=slugify(text=self.name, max_length=140, lowercase=True),
+        )
 
     def __repr__(self):
         return self.name
@@ -50,7 +55,6 @@ class ProductImage(db.Model):
         db.Integer,
         db.ForeignKey('product.id'),
         index=True,
-        nullable=False,
     )
     is_main = db.Column(db.Boolean, default=False, nullable=False)
 
@@ -143,3 +147,9 @@ class ProductCategory(db.Model):
     )
     product = db.relationship('Product', lazy='joined')
     category = db.relationship('Category', lazy='joined')
+
+
+admin.add_view(ProductAdminView(Product, db.session, category='Products'))
+admin.add_view(CategoryAdminView(Category, db.session, category='Products'))
+admin.add_view(IngredientAdminView(Ingredient, db.session, category='Products'))
+admin.add_view(ProductImageAdminView(ProductImage, db.session, category='Products'))

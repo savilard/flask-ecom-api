@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask_restx import Api, Resource
 
-product_blueprint = Blueprint('product', __name__)
+product_blueprint = Blueprint('products', __name__)
 api = Api(product_blueprint)
 
 
