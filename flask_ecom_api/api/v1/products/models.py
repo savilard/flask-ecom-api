@@ -33,7 +33,7 @@ class Product(db.Model):
 
     def __init__(self, *args, **kwargs):
         """Product model init."""
-        super(Product, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.generate_slug()
 
     def generate_slug(self) -> None:
@@ -122,7 +122,7 @@ class Category(db.Model):
 
     def __init__(self, *args, **kwargs):
         """Init of category class."""
-        super(Category, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.generate_slug()
 
     def generate_slug(self) -> None:
