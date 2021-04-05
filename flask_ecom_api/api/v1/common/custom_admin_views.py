@@ -21,5 +21,6 @@ class BaseModelView(ModelView):
     """Base model view."""
 
     def on_model_change(self, form, model, is_created):
+        """Generates a slug when the model changes."""
         model.generate_slug()
         return super(BaseModelView, self).on_model_change(form, model, is_created)

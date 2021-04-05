@@ -28,6 +28,7 @@ class Restaurant(db.Model):
     products = db.relationship('RestaurantProduct', lazy='joined', back_populates='restaurant')
 
     def __repr__(self):
+        """Printable representation of Restaurant model."""
         return f'<Restaurant id: {self.id}>'
 
 
@@ -43,7 +44,7 @@ class Courier(db.Model):
     fb_id = db.Column(db.String(25))
 
     def __repr__(self):
-        """Return a printable representation of the courier class."""
+        """Return a printable representation of the Courier model."""
         return f'<Courier id: {self.id}>'
 
 
@@ -67,6 +68,7 @@ class RestaurantCourier(db.Model):
     courier = db.relationship('Courier', lazy='joined')
 
     def __repr__(self):
+        """Printable representation of RestaurantCourier model."""
         return f'<RestaurantCourier restaurant: {self.restaurant_id} courier: {self.courier_id}>'
 
 
@@ -92,6 +94,7 @@ class RestaurantProduct(db.Model):
     product = db.relationship(Product, lazy='joined')
 
     def __repr__(self):
+        """Printable representation of RestaurantProduct model."""
         return f'<RestaurantProduct restaurant: {self.restaurant_id} product: {self.product_id}>'
 
 

@@ -32,6 +32,7 @@ class Product(db.Model):
     )
 
     def __init__(self, *args, **kwargs):
+        """Product model init."""
         super(Product, self).__init__(*args, **kwargs)
         self.generate_slug()
 
@@ -43,6 +44,7 @@ class Product(db.Model):
         )
 
     def __repr__(self):
+        """Printable representation of Product model."""
         return self.name
 
 
@@ -59,6 +61,7 @@ class ProductImage(db.Model):
     is_main = db.Column(db.Boolean, default=False, nullable=False)
 
     def __repr__(self):
+        """Printable representation of ProductImage model."""
         return self.src
 
 
@@ -77,6 +80,7 @@ class Ingredient(db.Model):
     price = db.Column(db.DECIMAL(10, 2), default=0)
 
     def __repr__(self):
+        """Printable representation of Ingredient model."""
         return self.name
 
 
@@ -127,6 +131,7 @@ class Category(db.Model):
             self.slug = slugify(text=self.name, max_length=140)
 
     def __repr__(self):
+        """Printable representation of Category model."""
         return self.name
 
 

@@ -7,28 +7,25 @@ api = Api(product_blueprint)
 
 @api.route('/api/v1/products')
 class ProductListAPI(Resource):
+    """Product list API class."""
+
     def get(self):
+        """Get method for ProductListAPI."""
         response = {
             'status': 'success',
             'message': 'list of products',
         }
         return response, 200
 
-    def post(self):
-        pass
-
 
 @api.route('/api/v1/products/<int:product_id>')
 class ProductAPI(Resource):
+    """Product API class."""
+
     def get(self, product_id):
+        """Get method for ProductAPI."""
         response = {
             'status': 'success',
             'message': f'{product_id}',
         }
         return response, 200
-
-    def put(self):
-        pass
-
-    def delete(self):
-        pass

@@ -33,6 +33,7 @@ class Customer(db.Model):
     orders = db.relationship('Order', lazy='joined')
 
     def __repr__(self):
+        """Printable representation of Customer model."""
         return f'<Customer id: {self.id}, customer name: {self.name}>'
 
 
@@ -60,6 +61,7 @@ class CustomerShippingAddress(db.Model):
     customers = db.relationship('Customer', lazy='joined')
 
     def __repr__(self):
+        """Printable representation of CustomerShippingAddress model."""
         return f'<Customer shipping address id: {self.id}>'
 
 
