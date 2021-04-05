@@ -1,6 +1,9 @@
 from flask_admin.contrib.sqla import ModelView
 
-from flask_ecom_api.api.v1.common.custom_admin_views import ImageView, BaseModelView
+from flask_ecom_api.api.v1.common.custom_admin_views import (
+    BaseModelView,
+    ImageView,
+)
 
 
 class ProductAdminView(BaseModelView):
