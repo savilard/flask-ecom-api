@@ -5,7 +5,7 @@ from jinja2 import Markup
 class ImageView(ModelView):
     """Custom image view."""
 
-    def _list_thumbnail(view, context, model, name):
+    def _list_thumbnail(view, context, model, name):  # noqa: N805
         """Shows a thumbnail image in the admin area."""
         if not model.src:
             return ''

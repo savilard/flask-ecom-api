@@ -36,7 +36,7 @@ class Product(db.Model):
         super(Product, self).__init__(*args, **kwargs)
         self.generate_slug()
 
-    def generate_slug(self) ->None:
+    def generate_slug(self) -> None:
         """Generate slug for product."""
         self.slug = '{id}-{slug}'.format(
             id=self.id,
