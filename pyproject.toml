@@ -24,6 +24,7 @@ Flask-Admin = "^1.5.7"
 Jinja2 = "^2.11.3"
 SQLAlchemy-Utils = "^0.36.8"
 phonenumbers = "^8.12.20"
+email-validator = "^1.1.2"
 
 
 [tool.poetry.dev-dependencies]
