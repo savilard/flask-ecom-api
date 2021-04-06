@@ -1,5 +1,3 @@
-from slugify import slugify
-
 from flask_ecom_api import admin, db
 from flask_ecom_api.api.v1.products.admin import (
     CategoryAdminView,
@@ -14,13 +12,12 @@ class Product(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(length=140), index=True, nullable=False)
-    slug = db.Column(db.String(length=140))
     description = db.Column(db.Text)
     images = db.relationship('ProductImage', backref='product', lazy='joined')
     price = db.Column(db.DECIMAL(10, 2), default=0)
     published = db.Column(db.Boolean, default=False)
 
-    __table_args__ = (
+    __table_args__ = (  # type: ignore
         db.CheckConstraint(price >= 0, name='check_product_price_non_negative'),
         {},
     )
@@ -35,18 +32,6 @@ class Product(db.Model):
         secondary='product_category',
         lazy='joined',
     )
-
-    def __init__(self, *args, **kwargs):
-        """Product model init."""
-        super().__init__(*args, **kwargs)
-        self.generate_slug()
-
-    def generate_slug(self) -> None:
-        """Generate slug for product."""
-        self.slug = '{id}-{slug}'.format(
-            id=self.id,
-            slug=slugify(text=self.name, max_length=140, lowercase=True),
-        )
 
     def __repr__(self):
         """Printable representation of Product model."""
@@ -84,7 +69,7 @@ class Ingredient(db.Model):
     weight = db.Column(db.Integer, default=0)
     price = db.Column(db.DECIMAL(10, 2), default=0)
 
-    __table_args__ = (
+    __table_args__ = (  # type: ignore
         db.CheckConstraint(price >= 0, name='check_ingredient_price_non_negative'),
         db.CheckConstraint(weight >= 0, name='check_ingredient_weight_non_negative'),
         {},
@@ -125,21 +110,10 @@ class Category(db.Model):
         unique=True,
         nullable=False,
     )
-    slug = db.Column(db.String(length=140))
     description = db.Column(db.Text)
 
     parent_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     parent = db.relationship('Category', remote_side=id, backref='subcategories')
-
-    def __init__(self, *args, **kwargs):
-        """Init of category class."""
-        super().__init__(*args, **kwargs)
-        self.generate_slug()
-
-    def generate_slug(self) -> None:
-        """Generate slug for category."""
-        if self.name:
-            self.slug = slugify(text=self.name, max_length=140)
 
     def __repr__(self):
         """Printable representation of Category model."""

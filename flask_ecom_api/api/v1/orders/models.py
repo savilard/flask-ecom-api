@@ -74,7 +74,7 @@ class OrderProduct(db.Model):
     order = db.relationship('Order', lazy='joined')
     product = db.relationship(Product, lazy='joined')
 
-    __table_args__ = (
+    __table_args__ = (  # type: ignore
         db.CheckConstraint(
             quantity >= 0,
             name='check_order_product_quantity_non_negative',
