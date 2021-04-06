@@ -74,6 +74,18 @@ class OrderProduct(db.Model):
     order = db.relationship('Order', lazy='joined')
     product = db.relationship(Product, lazy='joined')
 
+    __table_args__ = (
+        db.CheckConstraint(
+            quantity >= 0,
+            name='check_order_product_quantity_non_negative',
+        ),
+        db.CheckConstraint(
+            cost >= 0,
+            name='check_order_product_cost_non_negative',
+        ),
+        {},
+    )
+
     def __repr__(self):
         """Printable representation of OrderProduct model."""
         return f'<OrderProduct order: {self.order_id} product: {self.product_id}>'
