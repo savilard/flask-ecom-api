@@ -1,5 +1,3 @@
-from slugify import slugify
-
 from flask_ecom_api import admin, db
 from flask_ecom_api.api.v1.products.admin import (
     CategoryAdminView,
@@ -19,7 +17,7 @@ class Product(db.Model):
     price = db.Column(db.DECIMAL(10, 2), default=0)
     published = db.Column(db.Boolean, default=False)
 
-    __table_args__ = (
+    __table_args__ = (  # type: ignore
         db.CheckConstraint(price >= 0, name='check_product_price_non_negative'),
         {},
     )
@@ -71,7 +69,7 @@ class Ingredient(db.Model):
     weight = db.Column(db.Integer, default=0)
     price = db.Column(db.DECIMAL(10, 2), default=0)
 
-    __table_args__ = (
+    __table_args__ = (  # type: ignore
         db.CheckConstraint(price >= 0, name='check_ingredient_price_non_negative'),
         db.CheckConstraint(weight >= 0, name='check_ingredient_weight_non_negative'),
         {},
