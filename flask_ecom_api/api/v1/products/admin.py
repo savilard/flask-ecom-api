@@ -1,25 +1,22 @@
 from flask_admin.contrib.sqla import ModelView
 
-from flask_ecom_api.api.v1.common.custom_admin_views import (
-    BaseModelView,
-    ImageView,
-)
+from flask_ecom_api.api.v1.common.custom_admin_views import ImageView
 
 
-class ProductAdminView(BaseModelView):
+class ProductAdminView(ModelView):
     """Product admin view."""
 
     can_view_details = True
     column_display_pk = True
-    column_list = ('id', 'name', 'categories', 'price', 'slug')
+    column_list = ('id', 'name', 'categories', 'price')
     please_do_show_primary_keys_value = True
 
 
-class CategoryAdminView(BaseModelView):
+class CategoryAdminView(ModelView):
     """Category admin view."""
 
     can_view_details = True
-    column_list = ('id', 'name', 'slug', 'parent')
+    column_list = ('id', 'name', 'parent')
     please_do_show_primary_keys_value = True
 
 

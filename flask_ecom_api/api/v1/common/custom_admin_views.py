@@ -15,12 +15,3 @@ class ImageView(ModelView):
     column_formatters = {
         'src': _list_thumbnail,
     }
-
-
-class BaseModelView(ModelView):
-    """Base model view."""
-
-    def on_model_change(self, form, model, is_created):
-        """Generates a slug when the model changes."""
-        model.generate_slug()
-        return super().on_model_change(form, model, is_created)
