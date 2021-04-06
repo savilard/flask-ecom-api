@@ -4,7 +4,8 @@ import os
 from flask.cli import FlaskGroup
 from flask_migrate import Migrate, MigrateCommand
 
-from flask_ecom_api import create_app, db
+from flask_ecom_api import create_app
+from flask_ecom_api.app import db
 
 PROJECT_DIRECTORY = 'flask_ecom_api'
 

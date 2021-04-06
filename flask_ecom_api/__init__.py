@@ -1,15 +1,13 @@
 import os
 
 from flask import Flask
-from flask_admin import Admin
 from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
 
+from flask_ecom_api.api.v1.products.models import Product
 from flask_ecom_api.api.v1.products.views import product_blueprint
+from flask_ecom_api.app import admin, db
 
-db = SQLAlchemy()
 migrate = Migrate(compare_type=True)
-admin = Admin(template_mode='bootstrap4')
 
 
 def register_blueprints(app) -> None:

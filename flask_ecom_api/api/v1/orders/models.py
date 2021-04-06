@@ -1,8 +1,8 @@
 import enum
 from datetime import datetime
 
-from flask_ecom_api import db
 from flask_ecom_api.api.v1.products.models import Product
+from flask_ecom_api.app import db
 
 
 class OrderStatusEnum(enum.Enum):

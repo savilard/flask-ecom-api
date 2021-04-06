@@ -1,10 +1,10 @@
-from flask_ecom_api import admin, db
 from flask_ecom_api.api.v1.products.admin import (
     CategoryAdminView,
     IngredientAdminView,
     ProductAdminView,
     ProductImageAdminView,
 )
+from flask_ecom_api.app import admin, db
 
 
 class Product(db.Model):
