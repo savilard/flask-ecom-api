@@ -23,6 +23,9 @@ Jinja2 = "^2.11.3"
 SQLAlchemy-Utils = "^0.36.8"
 phonenumbers = "^8.12.20"
 email-validator = "^1.1.2"
+flask-marshmallow = "^0.14.0"
+marshmallow-sqlalchemy = "^0.24.2"
+simplejson = "^3.17.2"
 
 
 [tool.poetry.dev-dependencies]
