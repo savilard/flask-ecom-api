@@ -1,31 +1,13 @@
-from flask import Blueprint
-from flask_restx import Api, Resource
+from flask import Blueprint, jsonify
+
+from flask_ecom_api import Product  # type: ignore
+from flask_ecom_api.api.v1.products.schemas import products_schema
 
 product_blueprint = Blueprint('products', __name__)
-api = Api(product_blueprint)
 
 
-@api.route('/api/v1/products')
-class ProductListAPI(Resource):
-    """Product list API class."""
-
-    def get(self):
-        """Get method for ProductListAPI."""
-        response = {
-            'status': 'success',
-            'message': 'list of products',
-        }
-        return response, 200
-
-
-@api.route('/api/v1/products/<int:product_id>')
-class ProductAPI(Resource):
-    """Product API class."""
-
-    def get(self, product_id):
-        """Get method for ProductAPI."""
-        response = {
-            'status': 'success',
-            'message': f'{product_id}',
-        }
-        return response, 200
+@product_blueprint.route('/products', methods=['GET'])
+def products():
+    """Gets all products from db."""
+    all_products = Product.query.all()
+    return jsonify({'data': products_schema.dump(all_products)}), 200
