@@ -17,7 +17,7 @@ def products():
     return jsonify({'data': output}), 200
 
 
-@product_blueprint.route('/products/<product_id>', methods=['GET'])
+@product_blueprint.route('/products/<int:product_id>', methods=['GET'])
 def product_detail(product_id):
     """Get product detail."""
     product = Product.query.get(product_id)
