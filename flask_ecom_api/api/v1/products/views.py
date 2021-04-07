@@ -10,4 +10,5 @@ product_blueprint = Blueprint('products', __name__)
 def products():
     """Gets all products from db."""
     all_products = Product.query.all()
-    return jsonify({'data': products_schema.dump(all_products)}), 200
+    output = products_schema.dump(all_products)
+    return jsonify({'data': output}), 200
