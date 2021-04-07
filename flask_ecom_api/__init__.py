@@ -3,7 +3,11 @@ import os
 from flask import Flask
 from flask_migrate import Migrate
 
-from flask_ecom_api.api.v1.products.models import Ingredient, Product
+from flask_ecom_api.api.v1.products.models import (
+    Ingredient,
+    Product,
+    ProductImage,
+)
 from flask_ecom_api.api.v1.products.views import product_blueprint
 from flask_ecom_api.app import admin, app, db
 

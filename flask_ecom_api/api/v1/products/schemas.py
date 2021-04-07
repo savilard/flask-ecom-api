@@ -1,4 +1,4 @@
-from flask_ecom_api import Ingredient, Product  # type: ignore
+from flask_ecom_api import Ingredient, Product, ProductImage  # type: ignore
 from flask_ecom_api.app import marshmallow
 
 
@@ -16,6 +16,19 @@ class IngredientSchema(marshmallow.SQLAlchemySchema):
     price = marshmallow.auto_field()
 
 
+class ProductImageSchema(marshmallow.SQLAlchemySchema):
+    """Product image marshmallow schema."""
+
+    class Meta:
+        model = ProductImage
+        ordered = True
+
+    id = marshmallow.auto_field()
+    src = marshmallow.auto_field()
+    product_id = marshmallow.auto_field()
+    is_main = marshmallow.auto_field()
+
+
 class ProductSchema(marshmallow.SQLAlchemySchema):
     """Product marshmallow schema."""
 
@@ -29,6 +42,7 @@ class ProductSchema(marshmallow.SQLAlchemySchema):
     price = marshmallow.auto_field()
     published = marshmallow.auto_field()
     ingredients = marshmallow.Nested(IngredientSchema, many=True)
+    images = marshmallow.Nested(ProductImageSchema, many=True)
 
 
 product_schema = ProductSchema()
