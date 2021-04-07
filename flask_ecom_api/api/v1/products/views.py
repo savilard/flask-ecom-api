@@ -46,6 +46,11 @@ def create_product(args):
 @product_blueprint.route('/products/<int:product_id>', methods=['GET'])
 def product_detail(product_id):
     """Get product detail."""
-    product = Product.query.get(product_id)
+    product = Product.query.filter_by(id=product_id).first()
+
+    if not product:
+        output = f'product with id {product_id} not found!'
+        return jsonify({'error': output}), 404
+
     output = product_schema.dump(product)
     return jsonify({'data': output}), 200
