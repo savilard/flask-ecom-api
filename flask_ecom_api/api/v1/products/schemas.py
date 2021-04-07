@@ -5,7 +5,7 @@ from flask_ecom_api.app import marshmallow
 class IngredientSchema(marshmallow.SQLAlchemySchema):
     """Product ingredient schema."""
 
-    class Meta:  # noqa: WPS306, D106
+    class Meta:
         model = Ingredient
         ordered = True
 
@@ -19,7 +19,7 @@ class IngredientSchema(marshmallow.SQLAlchemySchema):
 class ProductSchema(marshmallow.SQLAlchemySchema):
     """Product marshmallow schema."""
 
-    class Meta:  # noqa: WPS306, D106
+    class Meta:
         model = Product
         ordered = True
 
