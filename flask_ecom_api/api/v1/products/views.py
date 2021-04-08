@@ -23,8 +23,8 @@ product_args = {
 def get_all_products():
     """Gets all products from db."""
     all_products = Product.query.all()
-    output = products_schema.dump(all_products)
-    return jsonify({'data': output}), 200
+    response = {'data': products_schema.dump(all_products)}
+    return jsonify(response), 200
 
 
 @product_blueprint.route('/products', methods=['POST'])
@@ -39,8 +39,8 @@ def create_product(args):
     )
     db.session.add(new_product)
     db.session.commit()
-    output = product_schema.dump(new_product)
-    return jsonify({'data': output}), 201
+    response = {'data': product_schema.dump(new_product)}
+    return jsonify(response), 201
 
 
 @product_blueprint.route('/products/<int:product_id>', methods=['GET'])
@@ -49,8 +49,16 @@ def product_detail(product_id):
     product = Product.query.filter_by(id=product_id).first()
 
     if not product:
-        output = f'product with id {product_id} not found!'
-        return jsonify({'error': output}), 404
+        response = {
+            'error': [
+                {
+                    'status': 404,
+                    'detail': 'The requested product could not be found',
+                    'message': 'Product not found',
+                },
+            ],
+        }
+        return jsonify(response), 404
 
-    output = product_schema.dump(product)
-    return jsonify({'data': output}), 200
+    response = {'data': product_schema.dump(product)}
+    return jsonify(response), 200
