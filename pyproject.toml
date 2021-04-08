@@ -25,7 +25,6 @@ email-validator = "^1.1.2"
 flask-marshmallow = "^0.14.0"
 marshmallow-sqlalchemy = "^0.24.2"
 simplejson = "^3.17.2"
-apispec = "^4.4.0"
 
 
 [tool.poetry.dev-dependencies]
