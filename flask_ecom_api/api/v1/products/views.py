@@ -54,3 +54,14 @@ def product_detail(product_id):
 
     response = {'data': product_schema.dump(product)}
     return jsonify(response), 200
+
+
+@product_blueprint.errorhandler(422)  # noqa: WPS432
+@product_blueprint.errorhandler(400)  # noqa: WPS432
+def handle_error(err):
+    """Return validation errors as JSON."""
+    headers = err.data.get('headers', None)
+    messages = err.data.get('messages', ['Invalid request.'])
+    if headers:
+        return jsonify({'errors': messages}), err.code, headers
+    return jsonify({'errors': messages}), err.code
