@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify
+from sqlalchemy.exc import OperationalError
 from webargs.flaskparser import use_args
 
 from flask_ecom_api import Product  # type: ignore
@@ -14,7 +15,20 @@ product_blueprint = Blueprint('products', __name__, url_prefix='/api/v1')
 @product_blueprint.route('/products', methods=['GET'])
 def get_all_products():
     """Gets all products from db."""
-    all_products = Product.query.all()
+    try:
+        all_products = Product.query.all()
+    except OperationalError:
+        response = {
+            'errors': [
+                {
+                    'status': 500,
+                    'message': 'Internal Server Error',
+                    'detail': 'There was an internal server error',
+                },
+            ],
+        }
+        return jsonify(response), 500
+
     response = {'data': products_schema.dump(all_products)}
     return jsonify(response), 200
 
