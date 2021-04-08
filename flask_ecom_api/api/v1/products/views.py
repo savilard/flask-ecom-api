@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify
-from webargs import fields
 from webargs.flaskparser import use_args
 
 from flask_ecom_api import Product  # type: ignore
@@ -11,13 +10,6 @@ from flask_ecom_api.app import db
 
 product_blueprint = Blueprint('products', __name__, url_prefix='/api/v1')
 
-product_args = {
-    'name': fields.Str(required=True),  # type: ignore
-    'description': fields.Str(),  # type: ignore
-    'price': fields.Decimal(),  # type: ignore
-    'published': fields.Bool(),  # type: ignore
-}
-
 
 @product_blueprint.route('/products', methods=['GET'])
 def get_all_products():
@@ -28,7 +20,7 @@ def get_all_products():
 
 
 @product_blueprint.route('/products', methods=['POST'])
-@use_args(product_args)
+@use_args(product_schema)
 def create_product(args):
     """Create new product."""
     new_product = Product(
