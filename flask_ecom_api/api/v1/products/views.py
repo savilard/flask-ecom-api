@@ -2,9 +2,10 @@ from flask import Blueprint, jsonify
 from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
-from flask_ecom_api import Product  # type: ignore
+from flask_ecom_api import Product, ProductImage  # type: ignore
 from flask_ecom_api.api.v1.common.error_responses import ErrorResponse
 from flask_ecom_api.api.v1.products.schemas import (
+    product_image_schema,
     product_schema,
     products_schema,
 )
@@ -80,6 +81,29 @@ def product_detail(product_id):
 
     response = {'data': product_schema.dump(product)}
     return jsonify(response), 200
+
+
+@product_blueprint.route('/images', methods=['POST'])
+@use_args(product_image_schema)
+def create_product_image(args):
+    """Create product image."""
+    new_product_image = ProductImage(
+        src=args.get('src'),
+    )
+    db.session.add(new_product_image)
+    try:
+        db.session.commit()
+    except SQLAlchemyError:
+        db.session.rollback()
+        response = ErrorResponse(
+            status=500,  # noqa: WPS432
+            message='Internal Server Error',
+            detail=f'The image with src "{new_product_image}" is not created',
+        ).construct_error_response()
+        return jsonify(response), 500
+
+    response = {'data': product_image_schema.dump(new_product_image)}
+    return jsonify(response), 201
 
 
 @product_blueprint.errorhandler(422)  # noqa: WPS432

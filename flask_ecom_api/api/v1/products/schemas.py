@@ -66,3 +66,4 @@ class ProductSchema(marshmallow.SQLAlchemySchema):
 
 product_schema = ProductSchema()
 products_schema = ProductSchema(many=True)
+product_image_schema = ProductImageSchema()
