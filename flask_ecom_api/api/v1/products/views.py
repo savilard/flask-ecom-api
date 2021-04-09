@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from sqlalchemy.exc import OperationalError
+from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
 from flask_ecom_api import Product  # type: ignore
@@ -17,7 +17,7 @@ def get_all_products():
     """Gets all products from db."""
     try:
         all_products = Product.query.all()
-    except OperationalError:
+    except SQLAlchemyError:
         response = {
             'errors': [
                 {
@@ -44,7 +44,21 @@ def create_product(args):
         published=args.get('published'),
     )
     db.session.add(new_product)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except SQLAlchemyError:
+        db.session.rollback()
+        response = {
+            'errors': [
+                {
+                    'status': 500,
+                    'message': 'Internal Server Error',
+                    'detail': 'There was an internal server error',
+                },
+            ],
+        }
+        return jsonify(response), 500
+
     response = {'data': product_schema.dump(new_product)}
     return jsonify(response), 201
 
@@ -52,7 +66,19 @@ def create_product(args):
 @product_blueprint.route('/products/<int:product_id>', methods=['GET'])
 def product_detail(product_id):
     """Get product detail."""
-    product = Product.query.filter_by(id=product_id).first()
+    try:
+        product = Product.query.filter_by(id=product_id).first()
+    except SQLAlchemyError:
+        response = {
+            'errors': [
+                {
+                    'status': 500,
+                    'message': 'Internal Server Error',
+                    'detail': 'There was an internal server error',
+                },
+            ],
+        }
+        return jsonify(response), 500
 
     if not product:
         response = {
