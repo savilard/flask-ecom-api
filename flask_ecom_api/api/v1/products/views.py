@@ -3,6 +3,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
 from flask_ecom_api import Product  # type: ignore
+from flask_ecom_api.api.v1.common.error_responses import ErrorResponse
 from flask_ecom_api.api.v1.products.schemas import (
     product_schema,
     products_schema,
@@ -18,15 +19,11 @@ def get_all_products():
     try:
         all_products = Product.query.all()
     except SQLAlchemyError:
-        response = {
-            'errors': [
-                {
-                    'status': 500,
-                    'message': 'Internal Server Error',
-                    'detail': 'There was an internal server error',
-                },
-            ],
-        }
+        response = ErrorResponse(
+            status=500,  # noqa: WPS432
+            message='Internal Server Error',
+            detail='There was an internal server error',
+        ).construct_error_response()
         return jsonify(response), 500
 
     response = {'data': products_schema.dump(all_products)}
@@ -37,8 +34,9 @@ def get_all_products():
 @use_args(product_schema)
 def create_product(args):
     """Create new product."""
+    new_product_name = args.get('name')
     new_product = Product(
-        name=args.get('name'),
+        name=new_product_name,
         description=args.get('description'),
         price=args.get('price'),
         published=args.get('published'),
@@ -48,15 +46,11 @@ def create_product(args):
         db.session.commit()
     except SQLAlchemyError:
         db.session.rollback()
-        response = {
-            'errors': [
-                {
-                    'status': 500,
-                    'message': 'Internal Server Error',
-                    'detail': 'There was an internal server error',
-                },
-            ],
-        }
+        response = ErrorResponse(
+            status=500,  # noqa: WPS432
+            message='Internal Server Error',
+            detail=f'The product named "{new_product_name}" is not created',
+        ).construct_error_response()
         return jsonify(response), 500
 
     response = {'data': product_schema.dump(new_product)}
@@ -69,27 +63,19 @@ def product_detail(product_id):
     try:
         product = Product.query.filter_by(id=product_id).first()
     except SQLAlchemyError:
-        response = {
-            'errors': [
-                {
-                    'status': 500,
-                    'message': 'Internal Server Error',
-                    'detail': 'There was an internal server error',
-                },
-            ],
-        }
+        response = ErrorResponse(
+            status=500,  # noqa: WPS432
+            message='Internal Server Error',
+            detail='There was an internal server error',
+        ).construct_error_response()
         return jsonify(response), 500
 
     if not product:
-        response = {
-            'error': [
-                {
-                    'status': 404,
-                    'detail': 'The requested product could not be found',
-                    'message': 'Product not found',
-                },
-            ],
-        }
+        response = ErrorResponse(
+            status=404,  # noqa: WPS432
+            message='Product not found',
+            detail='The requested product could not be found',
+        ).construct_error_response()
         return jsonify(response), 404
 
     response = {'data': product_schema.dump(product)}
