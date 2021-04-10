@@ -34,9 +34,8 @@ def get_all_products():
 @use_args(product_schema)
 def create_product(args):
     """Create new product."""
-    new_product_name = args.get('name')
     new_product = Product(
-        name=new_product_name,
+        name=args.get('name'),
         description=args.get('description'),
         price=args.get('price'),
         published=args.get('published'),
@@ -95,8 +94,8 @@ def create_product_image(args):
     )
 
 
-@product_blueprint.errorhandler(422)  # noqa: WPS432
-@product_blueprint.errorhandler(400)  # noqa: WPS432
+@product_blueprint.errorhandler(422)
+@product_blueprint.errorhandler(400)
 def handle_error(err):
     """Return validation errors as JSON."""
     headers = err.data.get('headers', None)
