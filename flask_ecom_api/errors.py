@@ -13,3 +13,18 @@ def not_found_error(err):
         ],
     }
     return jsonify(response), 404
+
+
+def internal_server_error(err):
+    """500 error handler."""
+    response = {
+        'errors': [
+            {
+                'status': 500,
+                'message': 'Internal Server Error',
+                'detail': 'There was an internal server error',
+            },
+        ],
+    }
+
+    return jsonify(response), 500
