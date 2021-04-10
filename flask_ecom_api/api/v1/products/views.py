@@ -73,6 +73,7 @@ def create_product_image(args):
     """Create product image."""
     new_product_image = ProductImage(
         src=args.get('src'),
+        product_id=args.get('product_id'),
     )
     db.session.add(new_product_image)
     try:
