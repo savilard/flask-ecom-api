@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, jsonify
+from flask import Blueprint, abort
 from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
@@ -83,14 +83,3 @@ def create_product_image(args):
         response_db_query=new_product_image,
         status_code=201,
     )
-
-
-@product_blueprint.errorhandler(422)
-@product_blueprint.errorhandler(400)
-def handle_error(err):
-    """Return validation errors as JSON."""
-    headers = err.data.get('headers', None)
-    messages = err.data.get('messages', ['Invalid request.'])
-    if headers:
-        return jsonify({'errors': messages}), err.code, headers
-    return jsonify({'errors': messages}), err.code
