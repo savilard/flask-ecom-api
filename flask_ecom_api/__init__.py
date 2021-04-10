@@ -11,6 +11,7 @@ from flask_ecom_api.api.v1.products.models import (
 )
 from flask_ecom_api.api.v1.products.views import product_blueprint
 from flask_ecom_api.app import admin, app, db
+from flask_ecom_api.errors import not_found_error
 
 migrate = Migrate(compare_type=True)
 
@@ -28,6 +29,8 @@ def create_app() -> Flask:
     migrate.init_app(app, db)
 
     register_blueprints(app)
+
+    app.register_error_handler(404, not_found_error)
 
     @app.shell_context_processor
     def ctx():
