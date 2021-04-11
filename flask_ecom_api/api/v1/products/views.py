@@ -62,7 +62,11 @@ def product_detail(product_id):
         product = Product.query.filter_by(id=product_id).first()
     except SQLAlchemyError:
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
-    return make_success_response(schema=product_schema, response_db_query=product, status_code=200)
+    return make_success_response(
+        schema=product_schema,
+        response_db_query=product,
+        status_code=HTTPStatus.OK,
+    )
 
 
 @product_blueprint.route('/images', methods=['POST'])
