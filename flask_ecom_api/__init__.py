@@ -12,9 +12,9 @@ from flask_ecom_api.api.v1.products.models import (
 from flask_ecom_api.api.v1.products.views import product_blueprint
 from flask_ecom_api.app import admin, app, db
 from flask_ecom_api.errors import (
-    handle_validation_errors,
     handle_internal_server_error,
     handle_not_found_error,
+    handle_validation_errors,
 )
 
 migrate = Migrate(compare_type=True)
