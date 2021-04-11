@@ -1,10 +1,8 @@
 from dataclasses import dataclass
+from http import HTTPStatus
 from typing import Dict, List, Union
 
 from flask import jsonify
-
-INTERNAL_SERVER_ERROR_STATUS_CODE = 500
-NOT_FOUND_ERROR_STATUS_CODE = 404
 
 ErrorResponseType = Dict[str, List[Dict[str, Union[int, str]]]]  # noqa: WPS221
 
@@ -33,22 +31,22 @@ class HttpError:
 def handle_not_found_error(err):
     """404 error response."""
     response = HttpError(
-        status=NOT_FOUND_ERROR_STATUS_CODE,
+        status=HTTPStatus.NOT_FOUND,
         message='Not found',
         detail='The requested URL was not found on the server',
     ).make_error_response()
-    return jsonify(response), NOT_FOUND_ERROR_STATUS_CODE
+    return jsonify(response), HTTPStatus.NOT_FOUND
 
 
 def handle_internal_server_error(err):
     """500 error handler."""
     response = HttpError(
-        status=INTERNAL_SERVER_ERROR_STATUS_CODE,
+        status=HTTPStatus.INTERNAL_SERVER_ERROR,
         message='Internal Server Error',
         detail='There was an internal server error',
     ).make_error_response()
 
-    return jsonify(response), INTERNAL_SERVER_ERROR_STATUS_CODE
+    return jsonify(response), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 def handle_validation_errors(err):

@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from flask import Blueprint, abort
 from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
@@ -20,12 +22,12 @@ def get_all_products():
     try:
         all_products = Product.query.all()
     except SQLAlchemyError:
-        abort(500)
+        abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
     return make_success_response(
         schema=products_schema,
         response_db_query=all_products,
-        status_code=200,
+        status_code=HTTPStatus.OK,
     )
 
 
@@ -44,12 +46,12 @@ def create_product(args):
         db.session.commit()
     except SQLAlchemyError:
         db.session.rollback()
-        abort(500)
+        abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
     return make_success_response(
         schema=product_schema,
         response_db_query=new_product,
-        status_code=201,
+        status_code=HTTPStatus.CREATED,
     )
 
 
@@ -59,7 +61,7 @@ def product_detail(product_id):
     try:
         product = Product.query.filter_by(id=product_id).first()
     except SQLAlchemyError:
-        abort(500)
+        abort(HTTPStatus.INTERNAL_SERVER_ERROR)
     return make_success_response(schema=product_schema, response_db_query=product, status_code=200)
 
 
@@ -76,10 +78,10 @@ def create_product_image(args):
         db.session.commit()
     except SQLAlchemyError:
         db.session.rollback()
-        abort(500)
+        abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
     return make_success_response(
         schema=product_image_schema,
         response_db_query=new_product_image,
-        status_code=201,
+        status_code=HTTPStatus.CREATED,
     )
