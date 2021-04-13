@@ -1,4 +1,5 @@
 from flask_ecom_api import Restaurant, RestaurantProduct  # type: ignore
+from flask_ecom_api.api.v1.products.schemas import ProductSchema
 from flask_ecom_api.app import marshmallow
 
 
@@ -14,6 +15,8 @@ class RestaurantProductSchema(marshmallow.SQLAlchemySchema):
     product_id = marshmallow.auto_field()
     availability = marshmallow.auto_field()
 
+    product = marshmallow.Nested(ProductSchema)
+
 
 class RestaurantSchema(marshmallow.SQLAlchemySchema):
     """Restaurant marshmallow schema."""
@@ -28,6 +31,8 @@ class RestaurantSchema(marshmallow.SQLAlchemySchema):
     latitude = marshmallow.auto_field()
     longitude = marshmallow.auto_field()
     contact_phone = marshmallow.auto_field()
+
+    products = marshmallow.Nested(RestaurantProductSchema, many=True)
 
 
 restaurant_schema = RestaurantSchema()

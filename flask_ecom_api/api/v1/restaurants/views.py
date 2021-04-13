@@ -9,6 +9,7 @@ from flask_ecom_api.api.v1.common.success_responses import make_success_response
 from flask_ecom_api.api.v1.restaurants.schemas import (
     restaurant_product_schema,
     restaurant_schema,
+    restaurants_schema,
 )
 from flask_ecom_api.app import db
 
@@ -60,4 +61,19 @@ def create_restaurant_and_product_relationship(args):
         schema=restaurant_product_schema,
         response_db_query=new_relationship,
         status_code=HTTPStatus.CREATED,
+    )
+
+
+@restaurant_blueprint.route('/restaurants', methods=['GET'])
+def get_all_restaurants():
+    """Gets all restaurants from db."""
+    try:
+        all_restaurants = Restaurant.query.all()
+    except SQLAlchemyError:
+        abort(HTTPStatus.INTERNAL_SERVER_ERROR)
+
+    return make_success_response(
+        schema=restaurants_schema,
+        response_db_query=all_restaurants,
+        status_code=HTTPStatus.OK,
     )
