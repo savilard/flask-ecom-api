@@ -54,3 +54,17 @@ def add_product_to_cart(args):
         response_db_query=new_cart_product,
         status_code=HTTPStatus.CREATED,
     )
+
+
+@cart_blueprint.route('/carts/<string:cart_reference>', methods=['GET'])
+def cart_detail(cart_reference):
+    """Get cart detail."""
+    try:
+        cart = Cart.query.filter_by(reference=cart_reference).first()
+    except SQLAlchemyError:
+        abort(HTTPStatus.INTERNAL_SERVER_ERROR)
+    return make_success_response(
+        schema=cart_schema,
+        response_db_query=cart,
+        status_code=HTTPStatus.OK,
+    )

@@ -28,6 +28,8 @@ class CartSchema(marshmallow.SQLAlchemySchema):
     updated_at = marshmallow.auto_field()
     expires_at = marshmallow.auto_field()
 
+    products = marshmallow.Nested(CartProductSchema, many=True)
+
 
 cart_schema = CartSchema()
 cart_product_schema = CartProductSchema()
