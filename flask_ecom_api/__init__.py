@@ -3,6 +3,8 @@ import os
 from flask import Flask
 from flask_migrate import Migrate
 
+from flask_ecom_api.api.v1.carts.models import Cart
+from flask_ecom_api.api.v1.carts.views import cart_blueprint
 from flask_ecom_api.api.v1.products.models import (
     Category,
     Ingredient,
@@ -23,6 +25,7 @@ migrate = Migrate(compare_type=True)
 def register_blueprints(current_app) -> None:
     """Register app blueprints."""
     current_app.register_blueprint(product_blueprint)
+    current_app.register_blueprint(cart_blueprint)
 
 
 def create_app() -> Flask:
