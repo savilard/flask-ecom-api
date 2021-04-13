@@ -77,3 +77,17 @@ def get_all_restaurants():
         response_db_query=all_restaurants,
         status_code=HTTPStatus.OK,
     )
+
+
+@restaurant_blueprint.route('/restaurants/<int:restaurant_id>', methods=['GET'])
+def restaurant_detail(restaurant_id):
+    """Get restaurant detail."""
+    try:
+        restaurant = Restaurant.query.filter_by(id=restaurant_id).first()
+    except SQLAlchemyError:
+        abort(HTTPStatus.INTERNAL_SERVER_ERROR)
+    return make_success_response(
+        schema=restaurant_schema,
+        response_db_query=restaurant,
+        status_code=HTTPStatus.OK,
+    )
