@@ -10,7 +10,10 @@ from flask_ecom_api.api.v1.products.models import (
     ProductImage,
 )
 from flask_ecom_api.api.v1.products.views import product_blueprint
-from flask_ecom_api.api.v1.restaurants.models import Restaurant
+from flask_ecom_api.api.v1.restaurants.models import (
+    Restaurant,
+    RestaurantProduct,
+)
 from flask_ecom_api.api.v1.restaurants.views import restaurant_blueprint
 from flask_ecom_api.app import admin, app, db
 from flask_ecom_api.errors import (

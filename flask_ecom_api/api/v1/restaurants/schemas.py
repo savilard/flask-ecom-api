@@ -1,5 +1,18 @@
-from flask_ecom_api import Restaurant  # type: ignore
+from flask_ecom_api import Restaurant, RestaurantProduct  # type: ignore
 from flask_ecom_api.app import marshmallow
+
+
+class RestaurantProductSchema(marshmallow.SQLAlchemySchema):
+    """Restaurant product marshmallow schema."""
+
+    class Meta:
+        model = RestaurantProduct
+        order = True
+
+    id = marshmallow.auto_field()
+    restaurant_id = marshmallow.auto_field()
+    product_id = marshmallow.auto_field()
+    availability = marshmallow.auto_field()
 
 
 class RestaurantSchema(marshmallow.SQLAlchemySchema):
@@ -19,3 +32,4 @@ class RestaurantSchema(marshmallow.SQLAlchemySchema):
 
 restaurant_schema = RestaurantSchema()
 restaurants_schema = RestaurantSchema(many=True)
+restaurant_product_schema = RestaurantProductSchema()
