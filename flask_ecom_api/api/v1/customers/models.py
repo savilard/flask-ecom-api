@@ -1,10 +1,10 @@
 from sqlalchemy_utils import EmailType, PhoneNumberType
 
-from flask_ecom_api import admin, db
 from flask_ecom_api.api.v1.customers.admin import (
     CustomerAdminView,
     CustomerShippingAddressAdminView,
 )
+from flask_ecom_api.app import admin, db
 
 
 class Customer(db.Model):
