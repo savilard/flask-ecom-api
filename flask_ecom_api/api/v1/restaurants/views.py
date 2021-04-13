@@ -18,8 +18,8 @@ restaurant_blueprint = Blueprint('restaurants', __name__, url_prefix='/api/v1')
 
 @restaurant_blueprint.route('/restaurants', methods=['POST'])
 @use_args(restaurant_schema)
-def create_product(args):
-    """Create new product."""
+def create_restaurant(args):
+    """Create new restaurant."""
     new_restaurant = Restaurant(
         name=args.get('name'),
         address=args.get('address'),
@@ -45,12 +45,12 @@ def create_product(args):
 @use_args(restaurant_product_schema)
 def create_restaurant_and_product_relationship(args):
     """Creates new relationship between restaurant and product."""
-    new_relationship = RestaurantProduct(
+    new_restaurant_and_product_relationship = RestaurantProduct(
         restaurant_id=args.get('restaurant_id'),
         product_id=args.get('product_id'),
         availability=args.get('availability'),
     )
-    db.session.add(new_relationship)
+    db.session.add(new_restaurant_and_product_relationship)
     try:
         db.session.commit()
     except SQLAlchemyError:
@@ -59,7 +59,7 @@ def create_restaurant_and_product_relationship(args):
 
     return make_success_response(
         schema=restaurant_product_schema,
-        response_db_query=new_relationship,
+        response_db_query=new_restaurant_and_product_relationship,
         status_code=HTTPStatus.CREATED,
     )
 
