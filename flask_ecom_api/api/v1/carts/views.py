@@ -4,8 +4,8 @@ from flask import Blueprint, abort
 from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
-from flask_ecom_api import Cart  # type: ignore
-from flask_ecom_api.api.v1.carts.schemas import cart_schema
+from flask_ecom_api import Cart, CartProduct  # type: ignore
+from flask_ecom_api.api.v1.carts.schemas import cart_product_schema, cart_schema
 from flask_ecom_api.api.v1.common.success_responses import make_success_response
 from flask_ecom_api.app import db
 
@@ -29,5 +29,28 @@ def create_cart(args):
     return make_success_response(
         schema=cart_schema,
         response_db_query=new_cart,
+        status_code=HTTPStatus.CREATED,
+    )
+
+
+@cart_blueprint.route('/carts/items', methods=['POST'])
+@use_args(cart_product_schema)
+def add_product_to_cart(args):
+    """Add product to cart."""
+    new_cart_product = CartProduct(
+        cart_id=args.get('cart_id'),
+        restaurant_product_id=args.get('restaurant_product_id'),
+        quantity=args.get('quantity'),
+    )
+    db.session.add(new_cart_product)
+    try:
+        db.session.commit()
+    except SQLAlchemyError:
+        db.session.rollback()
+        abort(HTTPStatus.INTERNAL_SERVER_ERROR)
+
+    return make_success_response(
+        schema=cart_product_schema,
+        response_db_query=new_cart_product,
         status_code=HTTPStatus.CREATED,
     )

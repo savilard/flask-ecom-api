@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from flask_migrate import Migrate
 
-from flask_ecom_api.api.v1.carts.models import Cart
+from flask_ecom_api.api.v1.carts.models import Cart, CartProduct
 from flask_ecom_api.api.v1.carts.views import cart_blueprint
 from flask_ecom_api.api.v1.products.models import (
     Category,

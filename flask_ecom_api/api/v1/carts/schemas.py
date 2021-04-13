@@ -1,5 +1,18 @@
-from flask_ecom_api import Cart  # type: ignore
+from flask_ecom_api import Cart, CartProduct  # type: ignore
 from flask_ecom_api.app import marshmallow
+
+
+class CartProductSchema(marshmallow.SQLAlchemySchema):
+    """Cart product marshmallow schema."""
+
+    class Meta:
+        model = CartProduct
+        ordered = True
+
+    id = marshmallow.auto_field()
+    cart_id = marshmallow.auto_field()
+    restaurant_product_id = marshmallow.auto_field()
+    quantity = marshmallow.auto_field()
 
 
 class CartSchema(marshmallow.SQLAlchemySchema):
@@ -17,3 +30,4 @@ class CartSchema(marshmallow.SQLAlchemySchema):
 
 
 cart_schema = CartSchema()
+cart_product_schema = CartProductSchema()
