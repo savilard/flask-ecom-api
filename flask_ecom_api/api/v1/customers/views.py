@@ -6,7 +6,10 @@ from webargs.flaskparser import use_args
 
 from flask_ecom_api import Customer  # type: ignore
 from flask_ecom_api.api.v1.common.success_responses import make_success_response
-from flask_ecom_api.api.v1.customers.schemas import customer_schema
+from flask_ecom_api.api.v1.customers.schemas import (
+    customer_schema,
+    customers_schema,
+)
 from flask_ecom_api.app import db
 
 customer_blueprint = Blueprint('customers', __name__, url_prefix='/api/v1')
@@ -32,4 +35,19 @@ def create_customer(args):
         schema=customer_schema,
         response_db_query=new_customer,
         status_code=HTTPStatus.CREATED,
+    )
+
+
+@customer_blueprint.route('/customers', methods=['GET'])
+def get_customers():
+    """Gets all customers from db."""
+    try:
+        customers = Customer.query.all()
+    except SQLAlchemyError:
+        abort(HTTPStatus.INTERNAL_SERVER_ERROR)
+
+    return make_success_response(
+        schema=customers_schema,
+        response_db_query=customers,
+        status_code=HTTPStatus.OK,
     )

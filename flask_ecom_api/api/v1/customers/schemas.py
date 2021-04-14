@@ -16,3 +16,4 @@ class CustomerSchema(marshmallow.SQLAlchemySchema):
 
 
 customer_schema = CustomerSchema()
+customers_schema = CustomerSchema(many=True)
