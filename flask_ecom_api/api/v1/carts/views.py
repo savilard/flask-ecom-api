@@ -1,10 +1,10 @@
 from http import HTTPStatus
 
-from flask import Blueprint, abort
+from flask import Blueprint, abort, jsonify
 from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
-from flask_ecom_api import Cart, CartProduct  # type: ignore
+from flask_ecom_api import Cart, CartProduct, RestaurantProduct  # type: ignore
 from flask_ecom_api.api.v1.carts.schemas import cart_product_schema, cart_schema
 from flask_ecom_api.api.v1.common.success_responses import make_success_response
 from flask_ecom_api.app import db
@@ -68,3 +68,24 @@ def cart_detail(cart_reference):
         response_db_query=cart,
         status_code=HTTPStatus.OK,
     )
+
+
+@cart_blueprint.route('/carts/<string:cart_reference>/total_amount')
+def get_cart_total_amount(cart_reference):
+    """Gets cart total amount."""
+    cart = (
+        Cart.query.join(
+            Cart.products,
+            RestaurantProduct.product,
+        )
+        .filter(Cart.reference == cart_reference)
+        .first()
+    )
+    total_amount = sum(
+        (
+            product.restaurant_product.product.price * product.quantity
+            for product in cart.products
+            if product.restaurant_product.availability
+        )
+    )
+    return jsonify({'data': {'total_amount': total_amount}}), HTTPStatus.OK
