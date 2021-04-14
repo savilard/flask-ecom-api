@@ -3,7 +3,10 @@ import os
 from flask import Flask
 from flask_migrate import Migrate
 
-from flask_ecom_api.api.v1.customers.models import Customer
+from flask_ecom_api.api.v1.customers.models import (
+    Customer,
+    CustomerShippingAddress,
+)
 from flask_ecom_api.api.v1.customers.views import customer_blueprint
 from flask_ecom_api.api.v1.products.models import (
     Category,
