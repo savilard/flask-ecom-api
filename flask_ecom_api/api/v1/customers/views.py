@@ -58,7 +58,7 @@ def get_customers():
 @use_args(customer_shipping_address)
 def create_customer_shipping_address(args):
     """Create new customer shipping address."""
-    new_customer_shipping_address = CustomerShippingAddress(
+    new_shipping_address = CustomerShippingAddress(
         customer_id=args.get('customer_id'),
         first_name=args.get('first_name'),
         last_name=args.get('last_name'),
@@ -71,7 +71,7 @@ def create_customer_shipping_address(args):
         postcode=args.get('postcode'),
         comment=args.get('comment'),
     )
-    db.session.add(new_customer_shipping_address)
+    db.session.add(new_shipping_address)
     try:
         db.session.commit()
     except SQLAlchemyError:
@@ -80,6 +80,6 @@ def create_customer_shipping_address(args):
 
     return make_success_response(
         schema=customer_shipping_address,
-        response_db_query=new_customer_shipping_address,
+        response_db_query=new_shipping_address,
         status_code=HTTPStatus.CREATED,
     )
