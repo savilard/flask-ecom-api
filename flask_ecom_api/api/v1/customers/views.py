@@ -83,3 +83,18 @@ def create_customer_shipping_address(args):
         response_db_query=new_shipping_address,
         status_code=HTTPStatus.CREATED,
     )
+
+
+@customer_blueprint.route('/customers/<int:customer_id>', methods=['GET'])
+def customer_detail(customer_id):
+    """Get customer detail."""
+    try:
+        customer = Customer.query.filter_by(id=customer_id).first()
+    except SQLAlchemyError:
+        abort(500)
+
+    return make_success_response(
+        schema=customer_schema,
+        response_db_query=customer,
+        status_code=HTTPStatus.OK,
+    )
