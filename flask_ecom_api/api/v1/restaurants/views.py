@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 from flask import Blueprint, abort
+from flask_jwt_extended import jwt_required
 from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
@@ -18,6 +19,7 @@ restaurant_blueprint = Blueprint('restaurants', __name__, url_prefix='/api/v1')
 
 @restaurant_blueprint.route('/restaurants', methods=['POST'])
 @use_args(restaurant_schema)
+@jwt_required()
 def create_restaurant(args):
     """Create new restaurant."""
     new_restaurant = Restaurant(
@@ -43,6 +45,7 @@ def create_restaurant(args):
 
 @restaurant_blueprint.route('/restaurants/relationships/products', methods=['POST'])
 @use_args(restaurant_product_schema)
+@jwt_required()
 def create_restaurant_and_product_relationship(args):
     """Creates new relationship between restaurant and product."""
     new_restaurant_and_product_relationship = RestaurantProduct(
@@ -65,6 +68,7 @@ def create_restaurant_and_product_relationship(args):
 
 
 @restaurant_blueprint.route('/restaurants', methods=['GET'])
+@jwt_required()
 def get_all_restaurants():
     """Gets all restaurants from db."""
     try:
@@ -80,6 +84,7 @@ def get_all_restaurants():
 
 
 @restaurant_blueprint.route('/restaurants/<int:restaurant_id>', methods=['GET'])
+@jwt_required()
 def restaurant_detail(restaurant_id):
     """Get restaurant detail."""
     try:
