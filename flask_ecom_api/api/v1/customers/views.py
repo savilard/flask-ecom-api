@@ -91,7 +91,7 @@ def customer_detail(customer_id):
     try:
         customer = Customer.query.filter_by(id=customer_id).first()
     except SQLAlchemyError:
-        abort(500)
+        abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
     return make_success_response(
         schema=customer_schema,
