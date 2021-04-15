@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 from flask import Blueprint, abort
+from flask_jwt_extended import jwt_required
 from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
@@ -18,6 +19,7 @@ customer_blueprint = Blueprint('customers', __name__, url_prefix='/api/v1')
 
 @customer_blueprint.route('/customers', methods=['POST'])
 @use_args(customer_schema)
+@jwt_required()
 def create_customer(args):
     """Create new customer."""
     new_customer = Customer(
@@ -40,6 +42,7 @@ def create_customer(args):
 
 
 @customer_blueprint.route('/customers', methods=['GET'])
+@jwt_required()
 def get_customers():
     """Gets all customers from db."""
     try:
@@ -56,6 +59,7 @@ def get_customers():
 
 @customer_blueprint.route('/customers/shipping_address', methods=['POST'])
 @use_args(customer_shipping_address)
+@jwt_required()
 def create_customer_shipping_address(args):
     """Create new customer shipping address."""
     new_shipping_address = CustomerShippingAddress(
@@ -86,6 +90,7 @@ def create_customer_shipping_address(args):
 
 
 @customer_blueprint.route('/customers/<int:customer_id>', methods=['GET'])
+@jwt_required()
 def customer_detail(customer_id):
     """Get customer detail."""
     try:
