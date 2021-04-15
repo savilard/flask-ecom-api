@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 from flask import Blueprint, abort
+from flask_jwt_extended import jwt_required
 from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
@@ -17,6 +18,7 @@ product_blueprint = Blueprint('products', __name__, url_prefix='/api/v1')
 
 
 @product_blueprint.route('/products', methods=['GET'])
+@jwt_required()
 def get_all_products():
     """Gets all products from db."""
     try:
@@ -33,6 +35,7 @@ def get_all_products():
 
 @product_blueprint.route('/products', methods=['POST'])
 @use_args(product_schema)
+@jwt_required()
 def create_product(args):
     """Create new product."""
     new_product = Product(
@@ -56,6 +59,7 @@ def create_product(args):
 
 
 @product_blueprint.route('/products/<int:product_id>', methods=['GET'])
+@jwt_required()
 def product_detail(product_id):
     """Get product detail."""
     try:
@@ -71,6 +75,7 @@ def product_detail(product_id):
 
 @product_blueprint.route('/images', methods=['POST'])
 @use_args(product_image_schema)
+@jwt_required()
 def create_product_image(args):
     """Create product image."""
     new_product_image = ProductImage(
