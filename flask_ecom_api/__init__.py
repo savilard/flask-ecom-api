@@ -10,6 +10,11 @@ from flask_ecom_api.api.v1.products.models import (
     ProductImage,
 )
 from flask_ecom_api.api.v1.products.views import product_blueprint
+from flask_ecom_api.api.v1.restaurants.models import (
+    Restaurant,
+    RestaurantProduct,
+)
+from flask_ecom_api.api.v1.restaurants.views import restaurant_blueprint
 from flask_ecom_api.app import admin, app, db
 from flask_ecom_api.errors import (
     handle_internal_server_error,
@@ -23,6 +28,7 @@ migrate = Migrate(compare_type=True)
 def register_blueprints(current_app) -> None:
     """Register app blueprints."""
     current_app.register_blueprint(product_blueprint)
+    current_app.register_blueprint(restaurant_blueprint)
 
 
 def create_app() -> Flask:
