@@ -73,14 +73,12 @@ def cart_detail(cart_reference):
 @cart_blueprint.route('/carts/<string:cart_reference>/total_amount')
 def get_cart_total_amount(cart_reference):
     """Gets cart total amount."""
-    # fmt: off
     cart = (
         Cart.query.join(
             Cart.products,
             RestaurantProduct.product,
         ).filter(Cart.reference == cart_reference).first()
     )
-    # fmt: on
     total_amount = sum(
         (
             product.restaurant_product.product.price * product.quantity

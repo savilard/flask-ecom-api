@@ -11,7 +11,6 @@ lint:
 		poetry run mypy flask_ecom_api/
 		poetry run flake8 flask_ecom_api/
 		poetry run isort flask_ecom_api/
-		poetry run black flask_ecom_api/ --skip-string-normalization --line-length 120
 
 .PHONY: unit
 unit:
