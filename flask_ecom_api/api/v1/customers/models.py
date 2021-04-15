@@ -4,6 +4,7 @@ from flask_ecom_api.api.v1.customers.admin import (
     CustomerAdminView,
     CustomerShippingAddressAdminView,
 )
+from flask_ecom_api.api.v1.orders.models import Order
 from flask_ecom_api.app import admin, db
 
 
@@ -30,7 +31,7 @@ class Customer(db.Model):
         backref='customer',
         lazy='joined',
     )
-    orders = db.relationship('Order', lazy='joined')
+    orders = db.relationship(Order, lazy='joined')
 
     def __repr__(self):
         """Printable representation of Customer model."""
