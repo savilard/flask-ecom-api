@@ -17,6 +17,7 @@ class ApiHttpResponse:
     detail: Optional[str] = None
     schema: Optional[marshmallow.SQLAlchemySchema] = None
     response_db_query: Optional[db.Model] = None
+    access_token: Optional[str] = None
 
     def make_error_response(self) -> ResponseType:
         """Return error response."""

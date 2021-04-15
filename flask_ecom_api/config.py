@@ -14,6 +14,7 @@ class BaseConfig:
             'connect_timeout': 500,
         },
     }
+    JWT_ACCESS_TOKEN_EXPIRES = os.environ.get('JWT_ACCESS_TOKEN_EXPIRES')
 
 
 class DevelopmentConfig(BaseConfig):
