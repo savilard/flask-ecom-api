@@ -15,6 +15,22 @@ class Cart(db.Model):
 
     products = db.relationship('CartProduct', lazy='joined', back_populates='cart')
 
+    def total_amount(self):
+        """Calculate cart total amount."""
+        query = (
+            Cart.query.join(
+                Cart.products,
+                RestaurantProduct.product,
+            ).filter(Cart.reference == self.reference).first()
+        )
+        return sum(
+            (
+                product.restaurant_product.product.price * product.quantity
+                for product in query.products
+                if product.restaurant_product.availability
+            ),
+        )
+
     def __repr__(self):
         """Printable representation of Cart model."""
         return f'<Cart id: {self.id}, reference: {self.reference}>'
