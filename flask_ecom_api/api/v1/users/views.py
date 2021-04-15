@@ -5,9 +5,9 @@ from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
 from flask_ecom_api import User  # type: ignore
+from flask_ecom_api.api.v1.common.responses import ApiHttpResponse
 from flask_ecom_api.api.v1.users.schemas import user_schema
 from flask_ecom_api.app import db
-from flask_ecom_api.errors import HttpError
 
 auth_blueprint = Blueprint('auth', __name__, url_prefix='/api/v1/auth')
 
@@ -19,7 +19,7 @@ def register_user(args):
     user_email = args.get('email')
     user = User.query.filter(User.email == user_email).first()
     if user:
-        return HttpError(
+        return ApiHttpResponse(
             status=HTTPStatus.BAD_REQUEST,
             message='User exists',
             detail='Sorry. That user already exists.',
@@ -37,8 +37,8 @@ def register_user(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return HttpError(
+    return ApiHttpResponse(
         status=HTTPStatus.CREATED,
         message='Successfully registered',
         detail=f'User with {user_email} successfully registered',
-    ).make_error_response()
+    ).make_success_response()

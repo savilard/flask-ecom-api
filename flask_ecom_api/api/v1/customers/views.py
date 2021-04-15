@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
 from flask_ecom_api import Customer, CustomerShippingAddress  # type: ignore
-from flask_ecom_api.api.v1.common.success_responses import make_success_response
+from flask_ecom_api.api.v1.common.responses import ApiHttpResponse
 from flask_ecom_api.api.v1.customers.schemas import (
     customer_schema,
     customer_shipping_address,
@@ -32,11 +32,11 @@ def create_customer(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return make_success_response(
+    return ApiHttpResponse(
         schema=customer_schema,
         response_db_query=new_customer,
-        status_code=HTTPStatus.CREATED,
-    )
+        status=HTTPStatus.CREATED,
+    ).make_success_response()
 
 
 @customer_blueprint.route('/customers', methods=['GET'])
@@ -47,11 +47,11 @@ def get_customers():
     except SQLAlchemyError:
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return make_success_response(
+    return ApiHttpResponse(
         schema=customers_schema,
         response_db_query=customers,
-        status_code=HTTPStatus.OK,
-    )
+        status=HTTPStatus.OK,
+    ).make_success_response()
 
 
 @customer_blueprint.route('/customers/shipping_address', methods=['POST'])
@@ -78,11 +78,11 @@ def create_customer_shipping_address(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return make_success_response(
+    return ApiHttpResponse(
         schema=customer_shipping_address,
         response_db_query=new_shipping_address,
-        status_code=HTTPStatus.CREATED,
-    )
+        status=HTTPStatus.CREATED,
+    ).make_success_response()
 
 
 @customer_blueprint.route('/customers/<int:customer_id>', methods=['GET'])
@@ -93,8 +93,8 @@ def customer_detail(customer_id):
     except SQLAlchemyError:
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return make_success_response(
+    return ApiHttpResponse(
         schema=customer_schema,
         response_db_query=customer,
-        status_code=HTTPStatus.OK,
-    )
+        status=HTTPStatus.OK,
+    ).make_success_response()
