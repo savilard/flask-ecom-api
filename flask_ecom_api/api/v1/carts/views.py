@@ -6,7 +6,7 @@ from webargs.flaskparser import use_args
 
 from flask_ecom_api import Cart, CartProduct  # type: ignore
 from flask_ecom_api.api.v1.carts.schemas import cart_product_schema, cart_schema
-from flask_ecom_api.api.v1.common.success_responses import make_success_response
+from flask_ecom_api.api.v1.common.responses import ApiHttpResponse
 from flask_ecom_api.app import db
 
 cart_blueprint = Blueprint('carts', __name__, url_prefix='/api/v1')
@@ -26,10 +26,10 @@ def create_cart(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return make_success_response(
+    return ApiHttpResponse(
         schema=cart_schema,
         response_db_query=new_cart,
-        status_code=HTTPStatus.CREATED,
+        status=HTTPStatus.CREATED,
     )
 
 
@@ -49,10 +49,10 @@ def add_product_to_cart(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return make_success_response(
+    return ApiHttpResponse(
         schema=cart_product_schema,
         response_db_query=new_cart_product,
-        status_code=HTTPStatus.CREATED,
+        status=HTTPStatus.CREATED,
     )
 
 
