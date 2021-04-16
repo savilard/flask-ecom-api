@@ -9,6 +9,7 @@ class UserAdminView(ModelView):
     column_list = (
         'username',
         'email',
+        'role',
         'active',
         'created_date',
     )
