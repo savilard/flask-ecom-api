@@ -17,12 +17,11 @@ class Cart(db.Model):
 
     def total_amount(self):
         """Calculate cart total amount."""
-        query = (
-            Cart.query.join(
-                Cart.products,
-                RestaurantProduct.product,
-            ).filter(Cart.reference == self.reference).first()
-        )
+        query = Cart.query.join(
+            Cart.products,
+            RestaurantProduct.product,
+        ).filter(Cart.reference == self.reference).first()
+
         return sum(
             (
                 product.restaurant_product.product.price * product.quantity
