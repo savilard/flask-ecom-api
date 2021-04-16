@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 from flask import Blueprint, abort, jsonify
+from flask_jwt_extended import jwt_required
 from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
@@ -14,6 +15,7 @@ cart_blueprint = Blueprint('carts', __name__, url_prefix='/api/v1')
 
 @cart_blueprint.route('/carts', methods=['POST'])
 @use_args(cart_schema)
+@jwt_required()
 def create_cart(args):
     """Create new cart."""
     new_cart = Cart(
@@ -35,6 +37,7 @@ def create_cart(args):
 
 @cart_blueprint.route('/carts/items', methods=['POST'])
 @use_args(cart_product_schema)
+@jwt_required()
 def add_product_to_cart(args):
     """Add product to cart."""
     new_cart_product = CartProduct(
@@ -57,6 +60,7 @@ def add_product_to_cart(args):
 
 
 @cart_blueprint.route('/carts/<string:cart_reference>', methods=['GET'])
+@jwt_required()
 def cart_detail(cart_reference):
     """Get cart detail."""
     try:
