@@ -8,7 +8,7 @@ class BaseConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.environ.get('SECRET_KEY', 'my_cool_secret_key')
     JSON_AS_ASCII = False
-    JSON_SORT_KEYS = False
+    JSON_SORT_KEYS = True
     SQLALCHEMY_ENGINE_OPTIONS = {
         'connect_args': {
             'connect_timeout': 500,
