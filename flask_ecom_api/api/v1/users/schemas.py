@@ -18,3 +18,4 @@ class UserSchema(marshmallow.SQLAlchemySchema):
 
 
 user_schema = UserSchema()
+custom_user_schema = UserSchema(only=('email',))

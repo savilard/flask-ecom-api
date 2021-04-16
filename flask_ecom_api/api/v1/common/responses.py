@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Union
 
 from flask import jsonify
 
@@ -9,17 +9,20 @@ ResponseType = Dict[str, List[Dict[str, Union[int, str]]]]  # noqa: WPS221
 
 
 @dataclass
-class ApiHttpResponse:
-    """Http response attributes."""
+class BaseApiResponse:
+    """Base api response class."""
 
     status: int
-    message: Optional[str] = None
-    detail: Optional[str] = None
-    schema: Optional[marshmallow.SQLAlchemySchema] = None
-    response_db_query: Optional[db.Model] = None
-    access_token: Optional[str] = None
 
-    def make_error_response(self) -> ResponseType:
+
+@dataclass()
+class ApiErrorResponse(BaseApiResponse):
+    """Error response attribute."""
+
+    message: str
+    detail: str
+
+    def prepare_response(self):
         """Return error response."""
         response = jsonify(
             {
@@ -35,22 +38,16 @@ class ApiHttpResponse:
         response.status_code = self.status
         return response
 
-    def make_success_response(self) -> ResponseType:
+
+@dataclass()
+class ApiSuccessResponse(BaseApiResponse):
+    """Success response attribute."""
+
+    schema: marshmallow.SQLAlchemySchema
+    response_db_query: db.Model
+
+    def prepare_response(self):
         """Return success response."""
-        if self.schema:
-            response = jsonify({'data': self.schema.dump(self.response_db_query)})
-            response.status_code = self.status
-            return response
-        response = jsonify(
-            {
-                'data': [
-                    {
-                        'status': self.status,
-                        'message': self.message,
-                        'detail': self.detail,
-                    },
-                ],
-            },
-        )
+        response = jsonify({'data': self.schema.dump(self.response_db_query)})
         response.status_code = self.status
         return response

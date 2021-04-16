@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from flask_jwt_extended import get_jwt, verify_jwt_in_request
 
-from flask_ecom_api.api.v1.common.responses import ApiHttpResponse
+from flask_ecom_api.api.v1.common.responses import ApiErrorResponse
 
 
 def admin_required():
@@ -16,11 +16,11 @@ def admin_required():
             claims = get_jwt()
             if claims.get('is_administrator'):
                 return fn(*args, **kwargs)
-            return ApiHttpResponse(
+            return ApiErrorResponse(
                 status=HTTPStatus.FORBIDDEN,
                 message='Only admin',
                 detail='Insufficient rights to work with this endpoint.',
-            ).make_error_response()
+            ).prepare_response()
 
         return decorator
 

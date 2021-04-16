@@ -6,9 +6,12 @@ from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
 from flask_ecom_api import User  # type: ignore
-from flask_ecom_api.api.v1.common.responses import ApiHttpResponse
+from flask_ecom_api.api.v1.common.responses import (
+    ApiErrorResponse,
+    ApiSuccessResponse,
+)
 from flask_ecom_api.api.v1.users.models import UserRoleEnum
-from flask_ecom_api.api.v1.users.schemas import user_schema
+from flask_ecom_api.api.v1.users.schemas import custom_user_schema, user_schema
 from flask_ecom_api.app import db
 
 auth_blueprint = Blueprint('auth', __name__, url_prefix='/api/v1/auth')
@@ -21,11 +24,11 @@ def register_user(args):
     user_email = args.get('email')
     user = User.query.filter(User.email == user_email).first()
     if user:
-        return ApiHttpResponse(
+        return ApiErrorResponse(
             status=HTTPStatus.BAD_REQUEST,
             message='User exists',
             detail='Sorry. That user already exists.',
-        ).make_error_response()
+        ).prepare_response()
 
     new_user = User(
         username=args.get('username'),
@@ -39,11 +42,11 @@ def register_user(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiHttpResponse(
+    return ApiSuccessResponse(
         status=HTTPStatus.CREATED,
-        message='Successfully registered',
-        detail=f'User with {user_email} successfully registered',
-    ).make_success_response()
+        schema=custom_user_schema,
+        response_db_query=new_user,
+    ).prepare_response()
 
 
 @auth_blueprint.route('/access_token', methods=['POST'])
@@ -63,8 +66,8 @@ def create_client_access_token(args):
         access_token = create_access_token(identity=user_email)
         return jsonify(access_token=access_token), HTTPStatus.CREATED
 
-    return ApiHttpResponse(
+    return ApiErrorResponse(
         status=HTTPStatus.UNAUTHORIZED,
         message='Login failed',
         detail='Bad username or password',
-    ).make_error_response()
+    ).prepare_response()

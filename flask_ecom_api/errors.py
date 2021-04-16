@@ -2,25 +2,25 @@ from http import HTTPStatus
 
 from flask import jsonify
 
-from flask_ecom_api.api.v1.common.responses import ApiHttpResponse
+from flask_ecom_api.api.v1.common.responses import ApiErrorResponse
 
 
 def handle_not_found_error(err):
     """404 error response."""
-    return ApiHttpResponse(
+    return ApiErrorResponse(
         status=HTTPStatus.NOT_FOUND,
         message='Not found',
         detail='The requested URL was not found on the server',
-    ).make_error_response()
+    ).prepare_response()
 
 
 def handle_internal_server_error(err):
     """500 error handler."""
-    return ApiHttpResponse(
+    return ApiErrorResponse(
         status=HTTPStatus.INTERNAL_SERVER_ERROR,
         message='Internal Server Error',
         detail='There was an internal server error',
-    ).make_error_response()
+    ).prepare_response()
 
 
 def handle_validation_errors(err):

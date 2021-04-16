@@ -7,7 +7,7 @@ from webargs.flaskparser import use_args
 
 from flask_ecom_api import Cart, CartProduct  # type: ignore
 from flask_ecom_api.api.v1.carts.schemas import cart_product_schema, cart_schema
-from flask_ecom_api.api.v1.common.responses import ApiHttpResponse
+from flask_ecom_api.api.v1.common.responses import ApiSuccessResponse
 from flask_ecom_api.app import db
 
 cart_blueprint = Blueprint('carts', __name__, url_prefix='/api/v1')
@@ -28,11 +28,11 @@ def create_cart(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiHttpResponse(
+    return ApiSuccessResponse(
         schema=cart_schema,
         response_db_query=new_cart,
         status=HTTPStatus.CREATED,
-    )
+    ).prepare_response()
 
 
 @cart_blueprint.route('/carts/items', methods=['POST'])
@@ -52,11 +52,11 @@ def add_product_to_cart(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiHttpResponse(
+    return ApiSuccessResponse(
         schema=cart_product_schema,
         response_db_query=new_cart_product,
         status=HTTPStatus.CREATED,
-    )
+    ).prepare_response()
 
 
 @cart_blueprint.route('/carts/<string:cart_reference>', methods=['GET'])
@@ -67,6 +67,7 @@ def cart_detail(cart_reference):
         cart = Cart.query.filter_by(reference=cart_reference).first()
     except SQLAlchemyError:
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
+
     return jsonify(
         {
             'data': cart_schema.dump(cart),

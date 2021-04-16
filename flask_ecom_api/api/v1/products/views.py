@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
 from flask_ecom_api import Product, ProductImage  # type: ignore
-from flask_ecom_api.api.v1.common.responses import ApiHttpResponse
+from flask_ecom_api.api.v1.common.responses import ApiSuccessResponse
 from flask_ecom_api.api.v1.products.schemas import (
     product_image_schema,
     product_schema,
@@ -26,11 +26,11 @@ def get_all_products():
     except SQLAlchemyError:
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiHttpResponse(
+    return ApiSuccessResponse(
         schema=products_schema,
         response_db_query=all_products,
         status=HTTPStatus.OK,
-    ).make_success_response()
+    ).prepare_response()
 
 
 @product_blueprint.route('/products', methods=['POST'])
@@ -51,11 +51,11 @@ def create_product(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiHttpResponse(
+    return ApiSuccessResponse(
         schema=product_schema,
         response_db_query=new_product,
         status=HTTPStatus.CREATED,
-    ).make_success_response()
+    ).prepare_response()
 
 
 @product_blueprint.route('/products/<int:product_id>', methods=['GET'])
@@ -66,11 +66,12 @@ def product_detail(product_id):
         product = Product.query.filter_by(id=product_id).first()
     except SQLAlchemyError:
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
-    return ApiHttpResponse(
+
+    return ApiSuccessResponse(
         schema=product_schema,
         response_db_query=product,
         status=HTTPStatus.OK,
-    ).make_success_response()
+    ).prepare_response()
 
 
 @product_blueprint.route('/images', methods=['POST'])
@@ -89,8 +90,8 @@ def create_product_image(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiHttpResponse(
+    return ApiSuccessResponse(
         schema=product_image_schema,
         response_db_query=new_product_image,
         status=HTTPStatus.CREATED,
-    ).make_success_response()
+    ).prepare_response()
