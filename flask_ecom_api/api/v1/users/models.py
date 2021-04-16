@@ -3,7 +3,8 @@ import datetime
 from sqlalchemy_utils import EmailType
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from flask_ecom_api.app import db
+from flask_ecom_api.api.v1.users.admin import UserAdminView
+from flask_ecom_api.app import admin, db
 
 
 class User(db.Model):
@@ -77,3 +78,6 @@ class UserRole(db.Model):
     def __repr__(self):
         """Printable representation of UserRole model."""
         return f'<{self.user_id} - {self.role_id}>'
+
+
+admin.add_view(UserAdminView(User, db.session, category='Users'))
