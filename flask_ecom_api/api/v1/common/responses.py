@@ -9,20 +9,20 @@ ResponseType = Dict[str, List[Dict[str, Union[int, str]]]]  # noqa: WPS221
 
 
 @dataclass
-class BaseApiResponse:
+class BaseApi:
     """Base api response class."""
 
     status: int
 
 
 @dataclass()
-class ApiErrorResponse(BaseApiResponse):
+class ApiError(BaseApi):
     """Error response attribute."""
 
     message: str
     detail: str
 
-    def prepare_response(self):
+    def response(self):
         """Return error response."""
         response = jsonify(
             {
@@ -40,13 +40,13 @@ class ApiErrorResponse(BaseApiResponse):
 
 
 @dataclass()
-class ApiSuccessResponse(BaseApiResponse):
+class ApiSuccess(BaseApi):
     """Success response attribute."""
 
     schema: marshmallow.SQLAlchemySchema
     response_db_query: db.Model
 
-    def prepare_response(self):
+    def response(self):
         """Return success response."""
         response = jsonify({'data': self.schema.dump(self.response_db_query)})
         response.status_code = self.status

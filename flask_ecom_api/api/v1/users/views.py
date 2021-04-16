@@ -6,10 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
 from flask_ecom_api import User  # type: ignore
-from flask_ecom_api.api.v1.common.responses import (
-    ApiErrorResponse,
-    ApiSuccessResponse,
-)
+from flask_ecom_api.api.v1.common.responses import ApiError, ApiSuccess
 from flask_ecom_api.api.v1.users.models import UserRoleEnum
 from flask_ecom_api.api.v1.users.schemas import custom_user_schema, user_schema
 from flask_ecom_api.app import db
@@ -24,11 +21,11 @@ def register_user(args):
     user_email = args.get('email')
     user = User.query.filter(User.email == user_email).first()
     if user:
-        return ApiErrorResponse(
+        return ApiError(
             status=HTTPStatus.BAD_REQUEST,
             message='User exists',
             detail='Sorry. That user already exists.',
-        ).prepare_response()
+        ).response()
 
     new_user = User(
         username=args.get('username'),
@@ -42,11 +39,11 @@ def register_user(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiSuccessResponse(
+    return ApiSuccess(
         status=HTTPStatus.CREATED,
         schema=custom_user_schema,
         response_db_query=new_user,
-    ).prepare_response()
+    ).response()
 
 
 @auth_blueprint.route('/access_token', methods=['POST'])
@@ -66,8 +63,8 @@ def create_client_access_token(args):
         access_token = create_access_token(identity=user_email)
         return jsonify(access_token=access_token), HTTPStatus.CREATED
 
-    return ApiErrorResponse(
+    return ApiError(
         status=HTTPStatus.UNAUTHORIZED,
         message='Login failed',
         detail='Bad username or password',
-    ).prepare_response()
+    ).response()

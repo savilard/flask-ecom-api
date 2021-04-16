@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
 from flask_ecom_api import Restaurant, RestaurantProduct  # type: ignore
-from flask_ecom_api.api.v1.common.responses import ApiSuccessResponse
+from flask_ecom_api.api.v1.common.responses import ApiSuccess
 from flask_ecom_api.api.v1.restaurants.schemas import (
     restaurant_product_schema,
     restaurant_schema,
@@ -36,11 +36,11 @@ def create_restaurant(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiSuccessResponse(
+    return ApiSuccess(
         schema=restaurant_schema,
         response_db_query=new_restaurant,
         status=HTTPStatus.CREATED,
-    ).prepare_response()
+    ).response()
 
 
 @restaurant_blueprint.route('/restaurants/relationships/products', methods=['POST'])
@@ -60,11 +60,11 @@ def create_restaurant_and_product_relationship(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiSuccessResponse(
+    return ApiSuccess(
         schema=restaurant_product_schema,
         response_db_query=new_restaurant_and_product_relationship,
         status=HTTPStatus.CREATED,
-    ).prepare_response()
+    ).response()
 
 
 @restaurant_blueprint.route('/restaurants', methods=['GET'])
@@ -76,11 +76,11 @@ def get_all_restaurants():
     except SQLAlchemyError:
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiSuccessResponse(
+    return ApiSuccess(
         schema=restaurants_schema,
         response_db_query=all_restaurants,
         status=HTTPStatus.OK,
-    ).prepare_response()
+    ).response()
 
 
 @restaurant_blueprint.route('/restaurants/<int:restaurant_id>', methods=['GET'])
@@ -92,8 +92,8 @@ def restaurant_detail(restaurant_id):
     except SQLAlchemyError:
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiSuccessResponse(
+    return ApiSuccess(
         schema=restaurant_schema,
         response_db_query=restaurant,
         status=HTTPStatus.OK,
-    ).prepare_response()
+    ).response()

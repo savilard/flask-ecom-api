@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
 from flask_ecom_api import Product, ProductImage  # type: ignore
-from flask_ecom_api.api.v1.common.responses import ApiSuccessResponse
+from flask_ecom_api.api.v1.common.responses import ApiSuccess
 from flask_ecom_api.api.v1.products.schemas import (
     product_image_schema,
     product_schema,
@@ -26,11 +26,11 @@ def get_all_products():
     except SQLAlchemyError:
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiSuccessResponse(
+    return ApiSuccess(
         schema=products_schema,
         response_db_query=all_products,
         status=HTTPStatus.OK,
-    ).prepare_response()
+    ).response()
 
 
 @product_blueprint.route('/products', methods=['POST'])
@@ -51,11 +51,11 @@ def create_product(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiSuccessResponse(
+    return ApiSuccess(
         schema=product_schema,
         response_db_query=new_product,
         status=HTTPStatus.CREATED,
-    ).prepare_response()
+    ).response()
 
 
 @product_blueprint.route('/products/<int:product_id>', methods=['GET'])
@@ -67,11 +67,11 @@ def product_detail(product_id):
     except SQLAlchemyError:
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiSuccessResponse(
+    return ApiSuccess(
         schema=product_schema,
         response_db_query=product,
         status=HTTPStatus.OK,
-    ).prepare_response()
+    ).response()
 
 
 @product_blueprint.route('/images', methods=['POST'])
@@ -90,8 +90,8 @@ def create_product_image(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiSuccessResponse(
+    return ApiSuccess(
         schema=product_image_schema,
         response_db_query=new_product_image,
         status=HTTPStatus.CREATED,
-    ).prepare_response()
+    ).response()

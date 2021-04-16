@@ -9,7 +9,7 @@ from flask_ecom_api import Customer, CustomerShippingAddress  # type: ignore
 from flask_ecom_api.api.v1.common.custom_flask_jwt_decorators import (
     admin_required,
 )
-from flask_ecom_api.api.v1.common.responses import ApiSuccessResponse
+from flask_ecom_api.api.v1.common.responses import ApiSuccess
 from flask_ecom_api.api.v1.customers.schemas import (
     customer_schema,
     customer_shipping_address,
@@ -37,11 +37,11 @@ def create_customer(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiSuccessResponse(
+    return ApiSuccess(
         schema=customer_schema,
         response_db_query=new_customer,
         status=HTTPStatus.CREATED,
-    ).prepare_response()
+    ).response()
 
 
 @customer_blueprint.route('/customers', methods=['GET'])
@@ -54,11 +54,11 @@ def get_customers():
     except SQLAlchemyError:
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiSuccessResponse(
+    return ApiSuccess(
         schema=customers_schema,
         response_db_query=customers,
         status=HTTPStatus.OK,
-    ).prepare_response()
+    ).response()
 
 
 @customer_blueprint.route('/customers/shipping_address', methods=['POST'])
@@ -86,11 +86,11 @@ def create_customer_shipping_address(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiSuccessResponse(
+    return ApiSuccess(
         schema=customer_shipping_address,
         response_db_query=new_shipping_address,
         status=HTTPStatus.CREATED,
-    ).prepare_response()
+    ).response()
 
 
 @customer_blueprint.route('/customers/<int:customer_id>', methods=['GET'])
@@ -102,8 +102,8 @@ def customer_detail(customer_id):
     except SQLAlchemyError:
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return ApiSuccessResponse(
+    return ApiSuccess(
         schema=customer_schema,
         response_db_query=customer,
         status=HTTPStatus.OK,
-    ).prepare_response()
+    ).response()
