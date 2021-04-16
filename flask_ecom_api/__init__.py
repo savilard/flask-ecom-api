@@ -3,6 +3,8 @@ import os
 from flask import Flask
 from flask_migrate import Migrate
 
+
+from flask_ecom_api.api.v1.carts.models import Cart, CartProduct
 from flask_ecom_api.api.v1.customers.models import (
     Customer,
     CustomerShippingAddress,
@@ -15,6 +17,7 @@ from flask_ecom_api.api.v1.products.models import (
     ProductImage,
 )
 from flask_ecom_api.api.v1.products.views import product_blueprint
+from flask_ecom_api.api.v1.restaurants.models import RestaurantProduct
 from flask_ecom_api.api.v1.restaurants.models import (
     Restaurant,
     RestaurantProduct,
@@ -27,12 +30,15 @@ from flask_ecom_api.errors import (
     handle_validation_errors,
 )
 
+from flask_ecom_api.api.v1.carts.views import cart_blueprint  # isort:skip
+
 migrate = Migrate(compare_type=True)
 
 
 def register_blueprints(current_app) -> None:
     """Register app blueprints."""
     current_app.register_blueprint(product_blueprint)
+    current_app.register_blueprint(cart_blueprint)
     current_app.register_blueprint(customer_blueprint)
     current_app.register_blueprint(restaurant_blueprint)
 
