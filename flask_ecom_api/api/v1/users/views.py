@@ -7,6 +7,7 @@ from webargs.flaskparser import use_args
 
 from flask_ecom_api import User  # type: ignore
 from flask_ecom_api.api.v1.common.responses import ApiHttpResponse
+from flask_ecom_api.api.v1.users.models import UserRoleEnum
 from flask_ecom_api.api.v1.users.schemas import user_schema
 from flask_ecom_api.app import db
 
@@ -52,7 +53,13 @@ def create_client_access_token(args):
     user_email = args.get('email')
     password = args.get('password')
     user = User.query.filter_by(email=user_email).first()
-    if user and user.check_password(password):
+    if user and user.check_password(password) and user.role == UserRoleEnum.admin:
+        access_token = create_access_token(
+            'admin_user',
+            additional_claims={'is_administrator': True},
+        )
+        return jsonify(access_token=access_token), HTTPStatus.CREATED
+    elif user and user.check_password(password):
         access_token = create_access_token(identity=user_email)
         return jsonify(access_token=access_token), HTTPStatus.CREATED
 

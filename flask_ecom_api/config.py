@@ -1,3 +1,4 @@
+import datetime
 import os
 
 
@@ -14,7 +15,9 @@ class BaseConfig:
             'connect_timeout': 500,
         },
     }
-    JWT_ACCESS_TOKEN_EXPIRES = os.environ.get('JWT_ACCESS_TOKEN_EXPIRES')
+    JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(
+        hours=int(os.environ.get('JWT_TOKEN_LIFETIME', 5)),
+    )
 
 
 class DevelopmentConfig(BaseConfig):

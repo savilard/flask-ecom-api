@@ -6,6 +6,9 @@ from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
 from flask_ecom_api import Customer, CustomerShippingAddress  # type: ignore
+from flask_ecom_api.api.v1.common.custom_flask_jwt_decorators import (
+    admin_required,
+)
 from flask_ecom_api.api.v1.common.responses import ApiHttpResponse
 from flask_ecom_api.api.v1.customers.schemas import (
     customer_schema,
@@ -43,6 +46,7 @@ def create_customer(args):
 
 @customer_blueprint.route('/customers', methods=['GET'])
 @jwt_required()
+@admin_required()
 def get_customers():
     """Gets all customers from db."""
     try:
