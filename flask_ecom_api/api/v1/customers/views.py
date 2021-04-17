@@ -1,11 +1,15 @@
 from http import HTTPStatus
 
 from flask import Blueprint, abort
+from flask_jwt_extended import jwt_required
 from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
 from flask_ecom_api import Customer, CustomerShippingAddress  # type: ignore
-from flask_ecom_api.api.v1.common.success_responses import make_success_response
+from flask_ecom_api.api.v1.common.custom_flask_jwt_decorators import (
+    admin_required,
+)
+from flask_ecom_api.api.v1.common.responses import ApiSuccess
 from flask_ecom_api.api.v1.customers.schemas import (
     customer_schema,
     customer_shipping_address,
@@ -18,6 +22,7 @@ customer_blueprint = Blueprint('customers', __name__, url_prefix='/api/v1')
 
 @customer_blueprint.route('/customers', methods=['POST'])
 @use_args(customer_schema)
+@jwt_required()
 def create_customer(args):
     """Create new customer."""
     new_customer = Customer(
@@ -32,14 +37,16 @@ def create_customer(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return make_success_response(
+    return ApiSuccess(
         schema=customer_schema,
         response_db_query=new_customer,
-        status_code=HTTPStatus.CREATED,
-    )
+        status=HTTPStatus.CREATED,
+    ).response()
 
 
 @customer_blueprint.route('/customers', methods=['GET'])
+@jwt_required()
+@admin_required()
 def get_customers():
     """Gets all customers from db."""
     try:
@@ -47,15 +54,16 @@ def get_customers():
     except SQLAlchemyError:
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return make_success_response(
+    return ApiSuccess(
         schema=customers_schema,
         response_db_query=customers,
-        status_code=HTTPStatus.OK,
-    )
+        status=HTTPStatus.OK,
+    ).response()
 
 
 @customer_blueprint.route('/customers/shipping_address', methods=['POST'])
 @use_args(customer_shipping_address)
+@jwt_required()
 def create_customer_shipping_address(args):
     """Create new customer shipping address."""
     new_shipping_address = CustomerShippingAddress(
@@ -78,14 +86,15 @@ def create_customer_shipping_address(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return make_success_response(
+    return ApiSuccess(
         schema=customer_shipping_address,
         response_db_query=new_shipping_address,
-        status_code=HTTPStatus.CREATED,
-    )
+        status=HTTPStatus.CREATED,
+    ).response()
 
 
 @customer_blueprint.route('/customers/<int:customer_id>', methods=['GET'])
+@jwt_required()
 def customer_detail(customer_id):
     """Get customer detail."""
     try:
@@ -93,8 +102,8 @@ def customer_detail(customer_id):
     except SQLAlchemyError:
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return make_success_response(
+    return ApiSuccess(
         schema=customer_schema,
         response_db_query=customer,
-        status_code=HTTPStatus.OK,
-    )
+        status=HTTPStatus.OK,
+    ).response()
