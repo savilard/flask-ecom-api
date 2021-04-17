@@ -3,7 +3,6 @@ import os
 from flask import Flask
 from flask_migrate import Migrate
 
-
 from flask_ecom_api.api.v1.carts.models import Cart, CartProduct
 from flask_ecom_api.api.v1.customers.models import (
     Customer,
@@ -17,7 +16,6 @@ from flask_ecom_api.api.v1.products.models import (
     ProductImage,
 )
 from flask_ecom_api.api.v1.products.views import product_blueprint
-from flask_ecom_api.api.v1.restaurants.models import RestaurantProduct
 from flask_ecom_api.api.v1.restaurants.models import (
     Restaurant,
     RestaurantProduct,
