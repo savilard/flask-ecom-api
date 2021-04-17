@@ -26,6 +26,7 @@ flask-marshmallow = "^0.14.0"
 marshmallow-sqlalchemy = "^0.24.2"
 simplejson = "^3.17.2"
 Flask-JWT-Extended = "^4.1.0"
+gunicorn = "^20.1.0"
 
 
 [tool.poetry.dev-dependencies]
