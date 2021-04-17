@@ -7,6 +7,7 @@
 </p>
 
 ## Description
+[![Build Status](https://www.travis-ci.com/savilard/flask-ecom-api.svg?branch=main)](https://www.travis-ci.com/savilard/flask-ecom-api)
 ![Platform](https://img.shields.io/badge/platform-linux-brightgreen)
 ![Python_versions](https://img.shields.io/badge/Python-3.7%7C3.8-brightgreen)
 ![GitHub](https://img.shields.io/github/license/velivir/books-library-restyle)
