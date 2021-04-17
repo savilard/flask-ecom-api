@@ -1,11 +1,12 @@
 from http import HTTPStatus
 
 from flask import Blueprint, abort
+from flask_jwt_extended import jwt_required
 from sqlalchemy.exc import SQLAlchemyError
 from webargs.flaskparser import use_args
 
 from flask_ecom_api import Product, ProductImage  # type: ignore
-from flask_ecom_api.api.v1.common.success_responses import make_success_response
+from flask_ecom_api.api.v1.common.responses import ApiSuccess
 from flask_ecom_api.api.v1.products.schemas import (
     product_image_schema,
     product_schema,
@@ -17,6 +18,7 @@ product_blueprint = Blueprint('products', __name__, url_prefix='/api/v1')
 
 
 @product_blueprint.route('/products', methods=['GET'])
+@jwt_required()
 def get_all_products():
     """Gets all products from db."""
     try:
@@ -24,15 +26,16 @@ def get_all_products():
     except SQLAlchemyError:
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return make_success_response(
+    return ApiSuccess(
         schema=products_schema,
         response_db_query=all_products,
-        status_code=HTTPStatus.OK,
-    )
+        status=HTTPStatus.OK,
+    ).response()
 
 
 @product_blueprint.route('/products', methods=['POST'])
 @use_args(product_schema)
+@jwt_required()
 def create_product(args):
     """Create new product."""
     new_product = Product(
@@ -48,29 +51,32 @@ def create_product(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return make_success_response(
+    return ApiSuccess(
         schema=product_schema,
         response_db_query=new_product,
-        status_code=HTTPStatus.CREATED,
-    )
+        status=HTTPStatus.CREATED,
+    ).response()
 
 
 @product_blueprint.route('/products/<int:product_id>', methods=['GET'])
+@jwt_required()
 def product_detail(product_id):
     """Get product detail."""
     try:
         product = Product.query.filter_by(id=product_id).first()
     except SQLAlchemyError:
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
-    return make_success_response(
+
+    return ApiSuccess(
         schema=product_schema,
         response_db_query=product,
-        status_code=HTTPStatus.OK,
-    )
+        status=HTTPStatus.OK,
+    ).response()
 
 
 @product_blueprint.route('/images', methods=['POST'])
 @use_args(product_image_schema)
+@jwt_required()
 def create_product_image(args):
     """Create product image."""
     new_product_image = ProductImage(
@@ -84,8 +90,8 @@ def create_product_image(args):
         db.session.rollback()
         abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
-    return make_success_response(
+    return ApiSuccess(
         schema=product_image_schema,
         response_db_query=new_product_image,
-        status_code=HTTPStatus.CREATED,
-    )
+        status=HTTPStatus.CREATED,
+    ).response()
